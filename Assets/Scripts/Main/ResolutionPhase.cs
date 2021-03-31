@@ -132,6 +132,16 @@ public class ScatterShotAction : AttackAction
     }
 }
 
+public class GuassCannonAction : AttackAction
+{
+    public override void ExecuteAction()
+    {
+        base.ExecuteAction();
+
+        target.TakeDamage(damage);
+    }
+}
+
 // DEFENSE ACTIONS
 public class EmergencyShieldAction : DefenceAction
 {

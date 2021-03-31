@@ -10,6 +10,7 @@ public class Hextile : MonoBehaviour
     public bool shielded;
     public bool blocked;
     public GameObject myCity;
+    public GameObject fogOfWar;
     public GameObject myShield;
     public GameObject myFire;
     public City containingCity;
@@ -27,6 +28,20 @@ public class Hextile : MonoBehaviour
     }
     private void Update()
     {
+        if (owningPlayerID == 1)
+        {
+            if (visible == false)
+            {
+                myCity.SetActive(false);
+                fogOfWar.SetActive(true);
+            }
+            else
+            {
+                fogOfWar.SetActive(false);
+            }
+
+        }
+
         if (isCity)
         {
             myCity.SetActive(true);
@@ -53,8 +68,11 @@ public class Hextile : MonoBehaviour
 
     public void Explode()
     {
-        containingCity.cityTiles.Remove(this);
-        containingCity.CheckDestroyed();
+        if (containingCity!=null)
+        {
+            containingCity.cityTiles.Remove(this);
+            containingCity.CheckDestroyed();
+        }
 
         GameObject hextileObject = gameObject;
         Transform gfx = hextileObject.transform.Find("Main");

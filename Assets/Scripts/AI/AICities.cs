@@ -35,7 +35,16 @@ public class AICities : MonoBehaviour
         //else
            // Debug.Log("cities remaining: " + numCities);
     }
+    public int DetermineEnergyGeneratedByCities()
+    {
+        int allCityEnergy = 0;
+        for (int i = 0; i < aiCities.Count; i++)
+        {
+            allCityEnergy += aiCities[i].cityEnergy;
+        }
 
+        return allCityEnergy;
+    }
     public void SelectRandomTemplate()
     {
         int randomInt = Random.Range(0, 4);

@@ -8,6 +8,7 @@ public class DeckHandUI : MonoBehaviour
 {
     public GameObject deckUI;
     public Transform handHolder;
+    public Transform enemyHandHolder;
     public GameObject handCardButton;
     Hands playerHand;
     public static DeckHandUI instance;
@@ -38,6 +39,15 @@ public class DeckHandUI : MonoBehaviour
     {
         handHolder.gameObject.SetActive(false);
     }
+    
+    public void EnableAIHandUI()
+    {
+        handHolder.gameObject.SetActive(true);
+    }
+    public void DisableAIHandUI()
+    {
+        handHolder.gameObject.SetActive(false);
+    }
 
     public void DrawHandUI()
     {
@@ -51,8 +61,13 @@ public class DeckHandUI : MonoBehaviour
             Card cardToDraw = playerHand.hand[i];
             GameObject newCardButton = Instantiate(handCardButton);
             newCardButton.transform.parent = handHolder;
-            TextMeshProUGUI text = newCardButton.GetComponentInChildren<TextMeshProUGUI>();
-            text.text = cardToDraw.cardName;
+            TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
+            text[0].text = cardToDraw.cardName;
+            text[0].color = Color.white;
+            text[1].text = cardToDraw.cardDescr;
+            text[1].color = Color.white;
+            text[2].text = cardToDraw.energyCostText;
+            text[2].color = Color.white;
 
             Button actualButton = newCardButton.GetComponent<Button>();
             actualButton.onClick.AddListener(() => cardToDraw.PlayCard(false));

@@ -127,7 +127,6 @@ public class Targetting : MonoBehaviour
                 rP.storedDefenceAction.effectedCity = singleTarget.containingCity;
                 rP.storedDefenceAction.target = singleTarget;
                 rP.CompleteAction();
-                rP.BeginPlayActions(); // For testing only. if not testing, comment this line out
                 dHUI.EnableHandUI();
                 ResetColors();
                 DisableObject();
@@ -135,6 +134,24 @@ public class Targetting : MonoBehaviour
             }
             else
                 Debug.Log("Invalid Target");
+        }
+        else if(currentCondition == TargetCondition.isEnemyTile)
+        {
+            if(singleTarget.owningPlayerID != 0)
+            {
+                validTarget = true;
+            }
+            if (validTarget)
+            {
+                selectedTargettingObject.SetActive(false);
+
+                rP.storedAttackAction.target = singleTarget;
+                rP.CompleteAction();
+                dHUI.EnableHandUI();
+                ResetColors();
+                DisableObject();
+                ClearTargets();
+            }
         }
     }
 }

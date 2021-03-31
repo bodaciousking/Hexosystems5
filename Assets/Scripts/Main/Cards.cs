@@ -13,6 +13,8 @@ public class Card
 {
     public int cardID;
     public string cardName;
+    public string cardDescr;
+    public string energyCostText;
     public int cardType;
     public int energyCost;
 
@@ -63,6 +65,8 @@ public class ScatterShot : AttackCard
         cardID = 001;
         cardType = 0;
         cardName = "Scatter Shot";
+        cardDescr = "EFFECT: Hit 3 random hexes and apply 1 damage";
+        energyCostText = "2";
         energyCost = 2;
         targetType = TargetType.random;
         numTargets = 4;
@@ -109,7 +113,42 @@ public class ScatterShot : AttackCard
 
         ResolutionPhase rP = ResolutionPhase.instance;
         rP.attackActions.Add(ssa); 
-        
+    }
+}
+
+public class GaussCannon : AttackCard
+{
+    public GaussCannon()
+    {
+        cardID = 002;
+        cardType = 0;
+        cardName = "Gauss Cannon";
+        cardDescr = "Target 1 tile to apply 1 damage.";
+        energyCostText = "2";
+        energyCost = 2;
+        targetType = TargetType.selectTarget;
+        numTargets = 1;
+        damageDealt = 1;
+    }
+
+    public override void PlayCard(bool playedByAI)
+    {
+        base.PlayCard(playedByAI);
+        if (!playedByAI)
+        {
+            Targetting targetting = Targetting.instance;
+            targetting.SelectObjectAoE(0);
+            targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+        }
+
+        GuassCannonAction gca = new GuassCannonAction();
+        gca.actionName = "Scatter Shot";
+        gca.target = null;
+        gca.damage = damageDealt;
+        gca.actionType = 0;
+
+        ResolutionPhase rP = ResolutionPhase.instance;
+        rP.storedAttackAction=gca;
     }
 }
 
@@ -121,7 +160,9 @@ public class EmergencyShield : DefenceCard
         cardID = 101;
         cardType = 1;
         cardName = "Emergency Shield";
+        cardDescr = "EFFECT: Apply 1 Shield point to a target hex. Shield lastsfor one turn or until destroyed.";
         energyCost = 3;
+        energyCostText = "3";
         targetType = TargetType.selectTarget;
         numTargets = 1;
         shieldType = 0;
@@ -157,7 +198,9 @@ public class EmergencyShield : DefenceCard
         cardID = 201;
         cardType = 2;
         cardName = "Brave Explorers";
+        cardDescr = "EFFECT: Scout 3 random hexes. Vision will last 1 turn";
         energyCost = 2;
+        energyCostText = "2";
         targetType = TargetType.selectTarget;
         numTargets = 4;
         visionDuration = 1;

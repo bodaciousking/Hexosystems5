@@ -16,6 +16,8 @@ public class Decks : MonoBehaviour
     public List<Card> allDefenceCards = new List<Card>();
     public List<Card> allReconCards = new List<Card>();
 
+    public GameObject Script;
+
     Hands playerHand;
     DeckHandUI dhUI;
     AIInfo aiInfo;
@@ -27,7 +29,7 @@ public class Decks : MonoBehaviour
         PopulateReconDeck();
 
         playerHand = GetComponent<Hands>();
-        dhUI = GameObject.Find("UIScripts").GetComponent<DeckHandUI>();
+        dhUI = Script.GetComponent<DeckHandUI>();
         aiInfo = GetComponent<AIInfo>();
 
         PrepareDecks();
@@ -35,12 +37,13 @@ public class Decks : MonoBehaviour
 
     public void PopulateAttackDeck()
     {
-        allAttackCards.Add(new ScatterShot());
-        allAttackCards.Add(new ScatterShot());
-        allAttackCards.Add(new ScatterShot());
-        allAttackCards.Add(new ScatterShot());
-        allAttackCards.Add(new ScatterShot());
-        allAttackCards.Add(new ScatterShot());
+        allAttackCards.Add(new GaussCannon());
+        //allAttackCards.Add(new ScatterShot());
+        //allAttackCards.Add(new ScatterShot());
+        //allAttackCards.Add(new ScatterShot());
+        //allAttackCards.Add(new ScatterShot());
+        //allAttackCards.Add(new ScatterShot());
+        //allAttackCards.Add(new ScatterShot());
     }
     public void PopulateDefenceDeck()
     {
