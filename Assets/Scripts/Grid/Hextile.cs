@@ -23,6 +23,7 @@ public class Hextile : MonoBehaviour
 
     private void Start()
     {
+        health = 2;
         //tileLocation = gameObject.transform.position;
         myShield.transform.localScale = new Vector3(myShield.transform.localScale.x, myCity.transform.localScale.y + myCity.transform.localScale.y/8f, myShield.transform.localScale.z);
     }
@@ -42,6 +43,10 @@ public class Hextile : MonoBehaviour
                 if (isCity)
                 {
                     myCity.SetActive(true);
+                    if (health <= 0)
+                    {
+                        myFire.SetActive(true);
+                    }
                 }
 
             }
@@ -89,4 +94,7 @@ public class Hextile : MonoBehaviour
         Renderer hextileRenderer = gfx.GetComponent<Renderer>();
         hextileRenderer.material.color = Color.red;
     }
+
+
+    
 }
