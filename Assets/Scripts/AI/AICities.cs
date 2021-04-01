@@ -164,11 +164,12 @@ public class AICities : MonoBehaviour
                 tileScript.transform.Find("Main").GetComponent<Renderer>().material.color = Color.gray;
                 tileScript.containingCity = newCity;
                 tileScript.health = 2;
+                tileScript.visible = false; // checking 
                 FloorGfx fgfx = tileScript.transform.Find("Main").GetComponent<FloorGfx>();
                 fgfx.myColor = Color.gray;
             }
             newCity.cityEnergy = newCity.DetermineCityEnergy();
-            newCity.owner = 1;
+            newCity.owner = 1; 
             aiCities.Add(newCity);
             success = true;
 
