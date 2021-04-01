@@ -133,7 +133,7 @@ public class TurnStructure : MonoBehaviour
     {
         msgD.DisplayMessage("Strategy Phase", 1f);
         deckHandUI.DisableDeckUI();
-        aiI.AiPlayCards();
+        StartCoroutine(aiI.AiPlayCards());
     }
     public void BeginPhaseResolution()
     {

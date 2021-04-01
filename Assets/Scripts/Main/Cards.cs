@@ -39,6 +39,49 @@ public class Card
     {
         random, selectTarget, noTarget
     }
+
+    public List<Hextile> SelectRandomHextile(bool playedByAI)
+    {
+        Transform enemyMapTransform;
+        GameObject clientMaster = GameObject.Find("ClientMaster");
+
+        if (!playedByAI)
+            enemyMapTransform = clientMaster.transform.Find("Player 1 Map");
+        else
+            enemyMapTransform = clientMaster.transform.Find("Player 0 Map");
+
+        GameObject enemyPlanetTransform = enemyMapTransform.transform.Find("Planet(Clone)").gameObject;
+
+        Planet enemyPlanet = enemyPlanetTransform.GetComponent<Planet>();
+
+        List<Hextile> hextileList = enemyPlanet.hextileList;
+
+        List<Hextile> selectedTargets = new List<Hextile>();
+
+        var rnd = new System.Random();
+        var randomNumbers = Enumerable.Range(0, hextileList.Count).OrderBy(x => rnd.Next()).Take(4).ToList();
+
+        for (int i = 0; i < randomNumbers.Count; i++)
+        {
+            selectedTargets.Add(hextileList[randomNumbers[i]]);
+        }
+        return selectedTargets;
+    }
+
+    public Hextile SelectTarget()
+    {
+        Hextile target;
+        AIInfo aiInfo = GameObject.Find("ClientMaster").GetComponent<AIInfo>();
+        if (aiInfo.enemyTiles.Count > 0)
+        {
+            target = aiInfo.enemyTiles[0];
+        }
+        else
+        {
+            target = SelectRandomHextile(true)[0];
+        }
+        return target;
+    }
 }
 
 public class AttackCard : Card
@@ -65,7 +108,7 @@ public class ScatterShot : AttackCard
         cardID = 001;
         cardType = 0;
         cardName = "Scatter Shot";
-        cardDescr = "EFFECT: Hit 3 random hexes and apply 1 damage";
+        cardDescr = "Hit 3 random hexes and apply 1 damage.";
         energyCostText = "2";
         energyCost = 2;
         targetType = TargetType.random;
@@ -73,46 +116,22 @@ public class ScatterShot : AttackCard
         damageDealt = 1;
     }
 
+
     public override void PlayCard(bool playedByAI)
     {
         base.PlayCard(playedByAI);
-
-
-        GameObject clientMaster = GameObject.Find("ClientMaster");
-        GameObject enemyMapTransform;
-
-        if (!playedByAI)
-            enemyMapTransform = clientMaster.transform.Find("Player 1 Map").gameObject;
-        else
-            enemyMapTransform = clientMaster.transform.Find("Player 0 Map").gameObject;
-
-        GameObject enemyPlanetTransform = enemyMapTransform.transform.Find("Planet(Clone)").gameObject;
-
-        Planet enemyPlanet = enemyPlanetTransform.GetComponent<Planet>();
-
-        List<Hextile> enemyTileList = enemyPlanet.hextileList;
-        List<Hextile> selectedTargets = new List<Hextile>();
-
-        var rnd = new System.Random();
-        var randomNumbers = Enumerable.Range(0, enemyTileList.Count).OrderBy(x => rnd.Next()).Take(4).ToList();
-
-
-        for (int i = 0; i < randomNumbers.Count; i++)
-        {
-            selectedTargets.Add(enemyTileList[randomNumbers[i]]);
-        }
 
         DeckHandUI dhUI = DeckHandUI.instance;
         dhUI.EnableHandUI();
 
         ScatterShotAction ssa = new ScatterShotAction();
-        ssa.targets = selectedTargets;
+        ssa.targets = SelectRandomHextile(playedByAI);
         ssa.actionName = "Scatter Shot";
         ssa.damage = damageDealt;
         ssa.actionType = 0;
 
         ResolutionPhase rP = ResolutionPhase.instance;
-        rP.attackActions.Add(ssa); 
+        rP.attackActions.Add(ssa);
     }
 }
 
@@ -123,7 +142,7 @@ public class GaussCannon : AttackCard
         cardID = 002;
         cardType = 0;
         cardName = "Gauss Cannon";
-        cardDescr = "Target 1 tile to apply 1 damage.";
+        cardDescr = "Target 1 tile and apply 1 damage.";
         energyCostText = "2";
         energyCost = 2;
         targetType = TargetType.selectTarget;
@@ -134,21 +153,28 @@ public class GaussCannon : AttackCard
     public override void PlayCard(bool playedByAI)
     {
         base.PlayCard(playedByAI);
+
+        GuassCannonAction gca = new GuassCannonAction();
+        gca.actionName = "Gauss Cannon";
+        gca.target = null;
+        gca.damage = damageDealt;
+        gca.actionType = 0;
         if (!playedByAI)
         {
             Targetting targetting = Targetting.instance;
             targetting.SelectObjectAoE(0);
             targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+
+            ResolutionPhase rP = ResolutionPhase.instance;
+            rP.storedAttackAction = gca;
         }
-
-        GuassCannonAction gca = new GuassCannonAction();
-        gca.actionName = "Scatter Shot";
-        gca.target = null;
-        gca.damage = damageDealt;
-        gca.actionType = 0;
-
-        ResolutionPhase rP = ResolutionPhase.instance;
-        rP.storedAttackAction=gca;
+        else
+        {
+            Debug.Log("Ai playing Gauss Cannon.");
+            gca.target = SelectTarget();
+            ResolutionPhase rP = ResolutionPhase.instance;
+            rP.attackActions.Add(gca);
+        }
     }
 }
 
@@ -160,7 +186,7 @@ public class EmergencyShield : DefenceCard
         cardID = 101;
         cardType = 1;
         cardName = "Emergency Shield";
-        cardDescr = "EFFECT: Apply 1 Shield point to a target hex. Shield lastsfor one turn or until destroyed.";
+        cardDescr = "Apply 1 Shield point to a target hex. Shield lasts for one turn or until destroyed.";
         energyCost = 3;
         energyCostText = "3";
         targetType = TargetType.selectTarget;
@@ -198,7 +224,7 @@ public class EmergencyShield : DefenceCard
         cardID = 201;
         cardType = 2;
         cardName = "Brave Explorers";
-        cardDescr = "EFFECT: Scout 3 random hexes. Vision will last 1 turn";
+        cardDescr = "Scout 3 random hexes. Vision lasts 1 turn.";
         energyCost = 2;
         energyCostText = "2";
         targetType = TargetType.selectTarget;
@@ -210,34 +236,8 @@ public class EmergencyShield : DefenceCard
     {
         base.PlayCard(playedByAI);
 
-        GameObject clientMaster = GameObject.Find("ClientMaster");
-        GameObject enemyMapTransform;
-        if (!playedByAI)
-            enemyMapTransform = clientMaster.transform.Find("Player 1 Map").gameObject;
-        else
-            enemyMapTransform = clientMaster.transform.Find("Player 0 Map").gameObject;
-
-        GameObject enemyPlanetTransform = enemyMapTransform.transform.Find("Planet(Clone)").gameObject;
-        Planet enemyPlanet = enemyPlanetTransform.GetComponent<Planet>();
-
-        List<Hextile> enemyTileList = enemyPlanet.hextileList;
-        List<Hextile> selectedTargets = new List<Hextile>();
-
-        var rnd = new System.Random();
-        var randomNumbers = Enumerable.Range(0, enemyTileList.Count).OrderBy(x => rnd.Next()).Take(4).ToList();
-
-        Debug.Log(randomNumbers[0]);
-        for (int i = 0; i < randomNumbers.Count; i++)
-        {
-            selectedTargets.Add(enemyTileList[randomNumbers[i]]);
-        }
-
-        DeckHandUI dhUI = DeckHandUI.instance;
-        dhUI.EnableHandUI();
-
-
         BraveExplorersAction bea = new BraveExplorersAction(playedByAI);
-        bea.targets = selectedTargets;
+        bea.targets = SelectRandomHextile(playedByAI);
         bea.actionName = "Brave Explorers";
         bea.actionType = 2;
 

@@ -89,13 +89,13 @@ public class Decks : MonoBehaviour
             }
             else
             {
-                Debug.Log("Hand full.");
+                //Debug.Log("Hand full.");
                 return null;
             }
         }
         else
         {
-            Debug.Log("Deck empty.");
+            //Debug.Log("Deck empty.");
             return null;
         }
     }
