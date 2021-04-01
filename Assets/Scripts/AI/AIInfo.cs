@@ -72,19 +72,19 @@ public class AIInfo : MonoBehaviour
     {
         if(priorities.z > priorities.x && priorities.z > priorities.y)
         {
-            Debug.Log("Drawing from recon.");
+            //Debug.Log("Drawing from recon.");
             decks.aiDrawCard(decks.aiReconDeck);
             priorities.z--;
         }
         else if(priorities.x > priorities.z && priorities.x > priorities.y)
         {
-            Debug.Log("Drawing from attack.");
+            //Debug.Log("Drawing from attack.");
             decks.aiDrawCard(decks.aiAttackDeck);
             priorities.x--;
         }
         else if(priorities.y > priorities.x && priorities.y > priorities.z)
         {
-            Debug.Log("Drawing from defence.");
+            //Debug.Log("Drawing from defence.");
             decks.aiDrawCard(decks.aiDefenceDeck);
             priorities.y--;
         }

@@ -908,7 +908,6 @@ GameObject:
   - component: {fileID: 450834069}
   - component: {fileID: 450834068}
   - component: {fileID: 450834067}
-  - component: {fileID: 450834070}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -974,46 +973,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 450834066}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 53.9, z: 0}
+  m_LocalRotation: {x: 0.3949249, y: 0.056717582, z: -0.024453977, w: 0.91663486}
+  m_LocalPosition: {x: 14.233382, y: 35.60329, z: -15.402634}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &450834070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450834066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da22627099a84bd4d8d2e300417ceb03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  targetOffset: {x: 0, y: 0, z: 0}
-  distance: 5
-  maxDistance: 20000
-  minDistance: 0.6
-  xSpeed: 200
-  ySpeed: 200
-  yMinLimit: -80
-  yMaxLimit: 800000
-  zoomRate: 100
-  panSpeed: 3
-  moveSpeed: 1
-  minYLocation: 0
-  maxYLocation: 1000000
-  zoomDampening: 5
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
-  camTargetInit: {fileID: 209608238}
-  desiredDistance: 60
-  camSpot1: {fileID: 0}
 --- !u!1 &469590726
 GameObject:
   m_ObjectHideFlags: 0
@@ -2534,7 +2500,7 @@ MonoBehaviour:
   endangeredTiles: []
   aiEnergy: 100
   priorities: {x: 0, y: 0, z: 0}
-  bias: {x: 10, y: 0, z: 0}
+  bias: {x: 5, y: 0, z: 0}
 --- !u!1 &970745174
 GameObject:
   m_ObjectHideFlags: 0

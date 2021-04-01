@@ -63,6 +63,7 @@ public class Hextile : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         health = health - dmg;
+        Debug.Log("Took " + dmg + " dmg. Health remaining: " + health);
         if(health <= 0) { Explode(); }
     }
 

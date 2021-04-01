@@ -28,7 +28,7 @@ public class ResolutionPhase : MonoBehaviour
     {
         if (storedAttackAction!= null) 
         {
-            Debug.Log("Finishing an Attack action.");
+            Debug.Log("Finishing an Attack action: " +storedAttackAction.actionName);
             attackActions.Add(storedAttackAction);
             storedAttackAction = null;
         }
@@ -126,7 +126,7 @@ public class ScatterShotAction : AttackAction
             Hextile hextileObject = targets[i];
             if (hextileObject.isCity)
             {
-                hextileObject.TakeDamage(2);
+                hextileObject.TakeDamage(damage);
             }
         }
     }
@@ -179,7 +179,7 @@ public class BraveExplorersAction : ReconAction
             {
                 if (item.isCity)
                 {
-                    Debug.Log("Added a city tile to AI Enmy tiles.");
+                    Debug.Log("Added a city tile to known player tiles.");
                     GameObject cM = GameObject.Find("ClientMaster");
                     AIInfo aiI = cM.GetComponent<AIInfo>();
                     aiI.enemyTiles.Add(item);
