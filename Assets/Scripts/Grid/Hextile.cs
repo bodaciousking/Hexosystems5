@@ -30,6 +30,7 @@ public class Hextile : MonoBehaviour
     {
         if (owningPlayerID == 1)
         {
+            
             if (visible == false)
             {
                 myCity.SetActive(false);
@@ -38,18 +39,22 @@ public class Hextile : MonoBehaviour
             else
             {
                 fogOfWar.SetActive(false);
+                if (isCity)
+                {
+                    myCity.SetActive(true);
+                }
+
             }
 
         }
-
-        if (isCity)
+        else if (isCity)
         {
             myCity.SetActive(true);
             if (health <= 0)
             {
                 myFire.SetActive(true);
             }
-        } 
+        }
         if (shielded)
         {
             myShield.SetActive(true);
@@ -58,6 +63,9 @@ public class Hextile : MonoBehaviour
         {
             myShield.SetActive(false);
         }
+
+
+       
     }
 
     public void TakeDamage(int dmg)
