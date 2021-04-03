@@ -44,6 +44,8 @@ public class ResolutionPhase : MonoBehaviour
             reconActions.Add(storedReconAction);
             storedReconAction = null;
         }
+        CameraMovement cM = CameraMovement.instance;
+        cM.SwitchPos(cM.posN);
     }
     public void BeginPlayActions()
     {

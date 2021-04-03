@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cards : MonoBehaviour
 {
-    
 }
 
 public class Card
@@ -30,9 +30,30 @@ public class Card
         {
             Hands hand = Hands.instance;
             hand.hand.Remove(this);
-            dHUI.DrawHandUI();
+            dHUI.DrawRevealedHandUI();
             dHUI.DisableHandUI();
         }
+
+        if (targetType == TargetType.selectTarget)
+        {
+            Targetting targetting = Targetting.instance;
+            switch (cardType)
+            {
+                case 0:
+                    targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+                    targetting.SelectObjectAoE(targetSize);
+                    break;
+                case 1:
+                    targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
+                    targetting.SelectObjectAoE(targetSize);
+                    break;
+                case 2:
+                    targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+                    targetting.SelectObjectAoE(targetSize);
+                    break;
+            }
+        }
+
     }
 
     public enum TargetType
@@ -147,6 +168,7 @@ public class GaussCannon : AttackCard
         energyCost = 2;
         targetType = TargetType.selectTarget;
         numTargets = 1;
+        targetSize = 0;
         damageDealt = 1;
     }
 
@@ -161,10 +183,6 @@ public class GaussCannon : AttackCard
         gca.actionType = 0;
         if (!playedByAI)
         {
-            Targetting targetting = Targetting.instance;
-            targetting.SelectObjectAoE(0);
-            targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
-
             ResolutionPhase rP = ResolutionPhase.instance;
             rP.storedAttackAction = gca;
         }
@@ -192,6 +210,7 @@ public class EmergencyShield : DefenceCard
         targetType = TargetType.selectTarget;
         numTargets = 1;
         shieldType = 0;
+        targetSize = 0;
         shieldsRestored = 2;
     }
     public override void PlayCard(bool playedByAI)
@@ -200,10 +219,6 @@ public class EmergencyShield : DefenceCard
 
         if (!playedByAI)
         {
-            Targetting targetting = Targetting.instance;
-            targetting.SelectObjectAoE(0);
-            targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
-
             EmergencyShieldAction emergencyShieldAction = new EmergencyShieldAction();
             emergencyShieldAction.actionName = "Emergency Shield";
             emergencyShieldAction.actionType = 1;
@@ -235,6 +250,9 @@ public class EmergencyShield : DefenceCard
     public override void PlayCard(bool playedByAI)
     {
         base.PlayCard(playedByAI);
+
+        DeckHandUI dhUI = DeckHandUI.instance;
+        dhUI.EnableHandUI();
 
         BraveExplorersAction bea = new BraveExplorersAction(playedByAI);
         bea.targets = SelectRandomHextile(playedByAI);

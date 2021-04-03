@@ -12,6 +12,7 @@ public class TurnStructure : MonoBehaviour
     DeckHandUI deckHandUI;
     AIInfo aiI;
     AICities aiC;
+    CameraMovement cM;
     public turnPhase currentPhase = turnPhase.Standby;
     public int numTurns = 0;
 
@@ -38,6 +39,7 @@ public class TurnStructure : MonoBehaviour
         rP = GetComponent<ResolutionPhase>();
         aiI = GetComponent<AIInfo>();
         aiC = GetComponent<AICities>();
+        cM = CameraMovement.instance;
     }
 
     public enum turnPhase
@@ -156,12 +158,6 @@ public class TurnStructure : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         NextPhase();
-    }
-
-    public void FindCamSpot()
-    {
-        CameraControll cC = Camera.main.GetComponent<CameraControll>();
-        cC.FindCoolSpot();
     }
 
     public void ToggleTest()

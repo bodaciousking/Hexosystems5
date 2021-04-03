@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class MapGeneration : MonoBehaviour
 {
-
-
-
-
     public List<GameObject> tiles;
 
     public GameObject fog;
@@ -16,13 +12,11 @@ public class MapGeneration : MonoBehaviour
     public GameObject hextile;
     public GameObject planetSphere;
 
-    CameraControll cC;
     public int numPlayers;
     public float planetSize = 40;
 
     void Start()
     {
-        cC = CameraControll.instance;
         for (int i = 0; i <= numPlayers -1; i++)
         {
             string holderName = "Player " + i.ToString() + " Map";
@@ -43,6 +37,7 @@ public class MapGeneration : MonoBehaviour
             Color planetColor = Random.ColorHSV();//Color.white;//
             planetObject.GetComponent<Renderer>().material.color = planetColor;
             planetObject.transform.parent = mapHolder;
+            planetObject.transform.parent = mapHolder;
             Planet planet = planetObject.gameObject.AddComponent<Planet>();
             planet.hextileList = hextileList;
 
@@ -57,16 +52,16 @@ public class MapGeneration : MonoBehaviour
 
                 for (int j = 0; j < rowLength; j++)
                 {
-                    GameObject newTile = Instantiate(hextile, new Vector3(k, 0, j - rowCenter), Quaternion.identity);
+                    GameObject newTile = Instantiate(hextile, new Vector3(k, 0, j - rowCenter), Quaternion.identity, rowHolder);
+                    newTile.transform.rotation = new Quaternion(0, 60, 0, 0);
                     tiles.Add(newTile);
-                    newTile.transform.parent = rowHolder;
                     
                     GameObject floor = newTile.transform.Find("Main").gameObject;
                     floor.GetComponent<Renderer>().material.color = planetColor;
                     floor.GetComponent<FloorGfx>().myColor = planetColor;
 
                     Transform cityObject = newTile.transform.Find("City");
-                    var euler = newTile.transform.eulerAngles; //Rotate the tile randomly so the cities look a little random.
+                    var euler = newTile.transform.eulerAngles; //Rotate the city randomly so they look a little random.
                     euler.y = Random.Range(0, 360);
                     cityObject.eulerAngles = euler;
                     cityObject.localScale += new Vector3(0, Random.Range(0f, 2f), 0);
@@ -90,11 +85,6 @@ public class MapGeneration : MonoBehaviour
             int offset = 50;
             mapHolder.transform.position = mapHolder.parent.position;
             mapHolder.transform.position += new Vector3(offset * i, 0, offset * i);
-
-
-            Transform camAnchor = new GameObject().transform;
-            camAnchor.transform.position = mapHolder.position += new Vector3(0, 0, numRows / 2);
-            //cC.camSpots.Add(camAnchor);
         }
         //FogGen();
     }

@@ -6,34 +6,25 @@ using UnityEngine.EventSystems;
 
 public class CardZoom : MonoBehaviour
 {
+    DeckHandUI dhUI;
     private bool isHeld = false;
-    public Vector3 currentPos; 
+    public Vector3 currentPos;
+    public int offset = 175;
 
-    // Start is called before the first frame update
     void Start()
     {
-        currentPos = this.gameObject.transform.position;
+        currentPos = gameObject.transform.position;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-
-
-    }
-
     public void onPointerEnterFunction()
     {
-
-        this.gameObject.transform.localScale = new Vector3(3, 3, 3);
-        this.gameObject.transform.localPosition += new Vector3(0, 150, 0);
-        this.gameObject.layer = 8;
+        gameObject.transform.localScale = new Vector3(3, 3, 3);
+        gameObject.transform.localPosition += new Vector3(0, offset, 0);
+        gameObject.layer = 8;
     }
-        public void onPointerExitFunction()
+    public void onPointerExitFunction()
     {
-        this.gameObject.layer = 5;
-        this.gameObject.transform.localScale = new Vector3(0.5876192f, 0.5164623f, 0.5751259f);
-            this.gameObject.transform.localPosition -= new Vector3(0, 150, 0);
-        }
+        gameObject.layer = 5;
+        gameObject.transform.localScale = new Vector3(0.5876192f, 0.5164623f, 0.5751259f);
+        gameObject.transform.localPosition -= new Vector3(0, offset, 0);
+    } 
 }

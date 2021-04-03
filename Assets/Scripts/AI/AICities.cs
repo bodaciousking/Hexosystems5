@@ -161,12 +161,10 @@ public class AICities : MonoBehaviour
             {
                 Hextile tileScript = possibleCity[i];
                 tileScript.isCity = !tileScript.isCity;
-                tileScript.transform.Find("Main").GetComponent<Renderer>().material.color = Color.gray;
                 tileScript.containingCity = newCity;
                 tileScript.health = 2;
                 tileScript.visible = false; // checking 
                 FloorGfx fgfx = tileScript.transform.Find("Main").GetComponent<FloorGfx>();
-                fgfx.myColor = Color.gray;
             }
             newCity.cityEnergy = newCity.DetermineCityEnergy();
             newCity.owner = 1; 

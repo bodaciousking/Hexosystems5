@@ -111,7 +111,7 @@ public class Decks : MonoBehaviour
             if (playerHand.hand.Count < 5)
             { 
                 playerHand.hand.Add(drawnCard);
-                dhUI.DrawHandUI();
+                dhUI.DrawHiddenHandUI();
                 return drawnCard;
             }
             else

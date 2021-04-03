@@ -6,7 +6,6 @@ public class GameStartPhases : MonoBehaviour
 {
     public initPhase currentPhase;
     MsgDisplay msgD;
-    CameraControll cC;
     TemplateSelection tS;
     TurnStructure turnStructureScript;
     AICities aIC;
@@ -31,7 +30,6 @@ public class GameStartPhases : MonoBehaviour
     private void Start()
     {
         msgD = MsgDisplay.instance;
-        cC = CameraControll.instance;
         tS = TemplateSelection.instance;
         aIC = AICities.instance;
         turnStructureScript = TurnStructure.instance;
