@@ -9,7 +9,7 @@ public class AICities : MonoBehaviour
     public int numCities;
     public bool donePlacing;
     GameObject player1Planet;
-    Planet planet;
+    HexoPlanet planet;
     GameStartPhases gSP;
     TurnStructure tS;
     List<Hextile> possibleCity = new List<Hextile>();
@@ -89,7 +89,7 @@ public class AICities : MonoBehaviour
     public void PlacePrep()
     {
         player1Planet = GameObject.Find("Player 1 Map");
-        planet = player1Planet.transform.Find("Planet(Clone)").GetComponent<Planet>();
+        planet = player1Planet.transform.Find("Planet(Clone)").GetComponent<HexoPlanet>();
         StartCoroutine(PlaceCityLoop());
     }
 

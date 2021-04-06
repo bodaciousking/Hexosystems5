@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7175564115216884996}
   - component: {fileID: 6927965203980451718}
   - component: {fileID: 7033446261590632942}
+  - component: {fileID: 8404972118198260686}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -59,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: edf917d653e9bca42bbae902f5a8860b, type: 2}
+  - {fileID: 2100000, guid: b62db20a32c872448b2e524da4747732, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,3 +94,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8404972118198260686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777117443855289286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db3e97143e74d84e90abea7952514c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hextileList: []
+  owningPlayerID: 0
+  mats:
+  - {fileID: 2100000, guid: 5013c5a8cc530684fb2057b929ae6655, type: 2}
+  - {fileID: 2100000, guid: b62db20a32c872448b2e524da4747732, type: 2}

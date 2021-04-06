@@ -62,7 +62,7 @@ public class DeckHandUI : MonoBehaviour
         {
             Card cardToDraw = playerHand.hand[i];
             GameObject newCardButton = Instantiate(handCardButton);
-            newCardButton.transform.parent = handHolder;
+            newCardButton.transform.SetParent(handHolder);
             Image cardImage = newCardButton.GetComponent<Image>();
             TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
             for (int j = 0; j < text.Length; j++)
@@ -111,7 +111,7 @@ public class DeckHandUI : MonoBehaviour
         }
 
         GameObject newCardButton = Instantiate(handCardButton);
-        newCardButton.transform.parent = handHolder;
+        newCardButton.transform.SetParent(handHolder);
         TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
         text[0].text = previewCard.cardName;
         text[0].color = Color.white;
@@ -133,7 +133,7 @@ public class DeckHandUI : MonoBehaviour
         {
             Card cardToDraw = playerHand.hand[i];
             GameObject newCardButton = Instantiate(handCardButton);
-            newCardButton.transform.parent = handHolder;
+            newCardButton.transform.SetParent(handHolder);
             TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
             text[0].text = cardToDraw.cardName;
             text[0].color = Color.white;

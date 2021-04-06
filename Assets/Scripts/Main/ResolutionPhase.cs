@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class ResolutionPhase : MonoBehaviour
 {
-    public List<AttackAction> attackActions = new List<AttackAction>();
-    public List<DefenceAction> defenceActions = new List<DefenceAction>();
-    public List<ReconAction> reconActions = new List<ReconAction>();
+    public List<CardAction> attackActions = new List<CardAction>();
+    public List<CardAction> defenceActions = new List<CardAction>();
+    public List<CardAction> reconActions = new List<CardAction>();
 
     public AttackAction storedAttackAction;
     public DefenceAction storedDefenceAction;
     public ReconAction storedReconAction;
 
     public static ResolutionPhase instance;
+
+    ResolutionUI rUI;
+    TurnStructure tS;
 
     private void Awake()
     {
@@ -24,28 +27,43 @@ public class ResolutionPhase : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        rUI = ResolutionUI.instance;
+        tS = TurnStructure.instance;
+    }
+
+
     public void CompleteAction()
     {
+        CardAction completedAction = new CardAction();
         if (storedAttackAction!= null) 
         {
-            Debug.Log("Finishing an Attack action: " +storedAttackAction.actionName);
-            attackActions.Add(storedAttackAction);
+            completedAction = storedAttackAction;
+            Debug.Log("Finishing an Attack action: " + completedAction.actionName);
+            attackActions.Add(completedAction);
             storedAttackAction = null;
         }
         if (storedDefenceAction!= null) 
         {
+            completedAction = storedDefenceAction;
             Debug.Log("Finishing a Defence action.");
-            defenceActions.Add(storedDefenceAction);
+            defenceActions.Add(completedAction);
             storedDefenceAction = null;
         }
         if (storedReconAction!= null) 
         {
+            completedAction = storedReconAction;
             Debug.Log("Finishing a Recon action.");
-            reconActions.Add(storedReconAction);
+            reconActions.Add(completedAction);
             storedReconAction = null;
         }
         CameraMovement cM = CameraMovement.instance;
         cM.SwitchPos(cM.posN);
+
+        rUI.playerActions.Add(completedAction);
+        completedAction = null;
+        rUI.DisplayActionButtons();
     }
     public void BeginPlayActions()
     {
@@ -58,30 +76,32 @@ public class ResolutionPhase : MonoBehaviour
         attackActions.Clear();
         defenceActions.Clear();
         reconActions.Clear();
+        rUI.DisplayActionButtons();
     }
 
     public IEnumerator ActionLoop()
     {
         for (int i = 0; i < attackActions.Count; i++)
         {
-            AttackAction aA = attackActions[i];
+            CardAction aA = attackActions[i];
             aA.ExecuteAction();
         }
         yield return new WaitForSeconds(1f);
 
         for (int i = 0; i < defenceActions.Count; i++)
         {
-            DefenceAction dA = defenceActions[i];
+            CardAction dA = defenceActions[i];
             dA.ExecuteAction();
         }
         yield return new WaitForSeconds(1f);
 
         for (int i = 0; i < reconActions.Count; i++)
         {
-            ReconAction rA = reconActions[i];
+            CardAction rA = reconActions[i];
             rA.ExecuteAction();
         }
         ClearActions();
+        tS.nextPhaseButton.SetActive(true);
     }
 }
 
@@ -89,6 +109,7 @@ public class CardAction
 {
     public int actionType; // 0 = Attack, 1 = Defence, 2 = Scouting
     public string actionName;
+    public Card representedCard;
     public Hextile target;
     public List<Hextile> targets = new List<Hextile>();
 
@@ -126,10 +147,7 @@ public class ScatterShotAction : AttackAction
         for (int i = 0; i < targets.Count; i++)
         {
             Hextile hextileObject = targets[i];
-            if (hextileObject.isCity)
-            {
-                hextileObject.TakeDamage(damage);
-            }
+            hextileObject.TakeDamage(damage);
         }
     }
 }
@@ -173,8 +191,6 @@ public class BraveExplorersAction : ReconAction
         {
             GameObject hextileObject = item.gameObject;
             Transform gfx = hextileObject.transform.Find("Main");
-            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
-            hextileRenderer.material.color = Color.blue;
 
             item.visible = true;
             if (playedByAI)

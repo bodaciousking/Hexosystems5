@@ -15,6 +15,9 @@ public class MapGeneration : MonoBehaviour
     public int numPlayers;
     public float planetSize = 40;
 
+    public List<Material> mats = new List<Material>();
+
+
     void Start()
     {
         for (int i = 0; i <= numPlayers -1; i++)
@@ -34,12 +37,13 @@ public class MapGeneration : MonoBehaviour
             GameObject planetObject = Instantiate(planetSphere, mapHolder.transform.position, Quaternion.identity);
             planetObject.transform.position += new Vector3((numRows - 1) / 2, -(planetSize/2) +1.5f, -1.5f);
             planetObject.transform.localScale *= planetSize;
-            Color planetColor = Random.ColorHSV();//Color.white;//
+            Color planetColor = Color.white;//
             planetObject.GetComponent<Renderer>().material.color = planetColor;
             planetObject.transform.parent = mapHolder;
             planetObject.transform.parent = mapHolder;
-            Planet planet = planetObject.gameObject.AddComponent<Planet>();
-            planet.hextileList = hextileList;
+            HexoPlanet planet = planetObject.gameObject.GetComponent<HexoPlanet>();
+            planet.owningPlayerID = i;
+            planet.GetComponent<Renderer>().material = mats[i];
 
             for (int k = 1; k <= numRows; k++)
             {
@@ -53,17 +57,19 @@ public class MapGeneration : MonoBehaviour
                 for (int j = 0; j < rowLength; j++)
                 {
                     GameObject newTile = Instantiate(hextile, new Vector3(k, 0, j - rowCenter), Quaternion.identity, rowHolder);
-                    newTile.transform.rotation = new Quaternion(0, 60, 0, 0);
+                    var euler = newTile.transform.eulerAngles; //Rotate the city randomly so they look a little random.
+                    euler.y = -150;
+                    newTile.transform.eulerAngles = euler;
                     tiles.Add(newTile);
                     
                     GameObject floor = newTile.transform.Find("Main").gameObject;
-                    floor.GetComponent<Renderer>().material.color = planetColor;
+                    floor.GetComponent<Renderer>().material.color = Color.white;
                     floor.GetComponent<FloorGfx>().myColor = planetColor;
 
                     Transform cityObject = newTile.transform.Find("City");
-                    var euler = newTile.transform.eulerAngles; //Rotate the city randomly so they look a little random.
-                    euler.y = Random.Range(0, 360);
-                    cityObject.eulerAngles = euler;
+                    var euler2 = newTile.transform.Find("City").eulerAngles; //Rotate the city randomly so they look a little random.
+                    euler2.y = Random.Range(0, 360);
+                    cityObject.eulerAngles = euler2;
                     cityObject.localScale += new Vector3(0, Random.Range(0f, 2f), 0);
                     cityObject.gameObject.SetActive(false);
 
@@ -80,11 +86,20 @@ public class MapGeneration : MonoBehaviour
                 else
                     rowHolder.position += new Vector3(0, 0, -0.5f);
             }
-
+            planet.hextileList = hextileList;
             //Offset the entire player's grid based on the number of players
-            int offset = 50;
             mapHolder.transform.position = mapHolder.parent.position;
-            mapHolder.transform.position += new Vector3(offset * i, 0, offset * i);
+            if(i == 0)
+            {
+                mapHolder.Rotate(-3F, 0, -3.4F);
+                planet.transform.position = new Vector3(10, -20, -12);
+            }
+            if (i == 1)
+            {
+                mapHolder.transform.position += new Vector3(-10, 0, 35);
+                mapHolder.Rotate(-8F, 4.2F, 0);
+                planet.transform.position += new Vector3(-7, 0, 10);
+            }
         }
         //FogGen();
     }

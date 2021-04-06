@@ -51,8 +51,6 @@ public class Targetting : MonoBehaviour
         selectedTargettingObject = newObj;
         selectedTargettingObject.SetActive(true);
 
-        Debug.Log(currentCondition);
-
         if (currentCondition == TargetCondition.isEnemyTile || currentCondition == TargetCondition.isFogged)
             cM.SwitchPos(cM.pos1);
         else if (currentCondition == TargetCondition.isFriendlyCity)

@@ -24,7 +24,7 @@ public class CardZoom : MonoBehaviour
     public void onPointerExitFunction()
     {
         gameObject.layer = 5;
-        gameObject.transform.localScale = new Vector3(0.5876192f, 0.5164623f, 0.5751259f);
+        gameObject.transform.localScale = new Vector3(.7f, .6f, .6f);
         gameObject.transform.localPosition -= new Vector3(0, offset, 0);
     } 
 }
