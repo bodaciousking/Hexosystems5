@@ -8,6 +8,8 @@ public class TemplateSelection : MonoBehaviour
     public int size7, size4, size3;
     public static TemplateSelection instance;
     public GameObject button7, button4, button3, choiceWndow;
+    public GameObject cityPlacementUI;
+    public List<GameObject> cityPlaceUIObjects = new List<GameObject>();
     CityPlacement targettingScript;
     GameStartPhases gSP;
     MsgDisplay msgD;
@@ -45,7 +47,7 @@ public class TemplateSelection : MonoBehaviour
             button3.SetActive(true);
         }
 
-        msgD.DisplayMessage("Place Your Cities", 0.5f);
+        msgD.DisplayMessage("Place Your Cities", 0.5f); cityPlacementUI.SetActive(true);
     }
 
     private void Update()

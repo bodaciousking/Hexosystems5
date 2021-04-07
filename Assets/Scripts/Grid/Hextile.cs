@@ -79,9 +79,21 @@ public class Hextile : MonoBehaviour
 
     public void TakeDamage(int dmg)
     {
-        health = health - dmg;
-        Debug.Log("Took " + dmg + " dmg. Health remaining: " + health);
-        if(health <= 0) { Explode(); }
+        if (isCity)
+        {
+            if(permanentShields > 0)
+            {
+                permanentShields -= dmg;
+            }
+            else
+                health = health - dmg;
+
+            if (health <= 0) 
+            { 
+                Explode(); 
+            }
+        }
+        myFire.SetActive(true);
     }
 
     public void Explode()

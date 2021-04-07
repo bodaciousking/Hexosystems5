@@ -8,7 +8,9 @@ public class CityPlacement : MonoBehaviour
     public GameObject target;
     public GameObject selectedCityObject;
     public List<GameObject> cityPlaceObjects = new List<GameObject>();
+    public List<GameObject> cityPlaceUIObjects = new List<GameObject>();
     public static CityPlacement instance;
+    public GameObject cityPlacementUI;
     TemplateSelection tS;
     CityHandler cH;
     public int intendedSize;
@@ -79,6 +81,8 @@ public class CityPlacement : MonoBehaviour
                 }
             }
         }
+        else
+            cityPlacementUI.SetActive(false);
     }
 
     public void AddTileToCity(Hextile tile)

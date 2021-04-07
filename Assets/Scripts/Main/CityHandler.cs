@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CityHandler : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class CityHandler : MonoBehaviour
     public int generatedEnergy = 0;
     public int numCities;
     public static CityHandler instance;
+    public TextMeshProUGUI energyText;
+
     public int DetermineEnergyGeneratedByCities()
     {
         int allCityEnergy = 0;
@@ -19,14 +22,22 @@ public class CityHandler : MonoBehaviour
 
         return allCityEnergy;
     }
-
+    private void Start()
+    {
+    }
     private void Update()
     {
         numCities = myCities.Count;
+        if (energyText)
+            energyText.text = generatedEnergy.ToString();
     }
 
     public void DestroyCity(City destroyedCity)
     {
+        for (int i = 0; i < destroyedCity.cityTiles.Count; i++)
+        {
+            destroyedCity.cityTiles[i].Explode();
+        }
         myCities.Remove(destroyedCity);
         numCities = myCities.Count;
         if (numCities <= 0)
@@ -120,7 +131,7 @@ public class City
                     }
                     break;
                 case 7:
-                    if (cityTiles.Count <= 5)
+                    if (cityTiles.Count <= 3)
                     {
                         Debug.Log(cityTiles.Count);
                         Debug.Log("City Destroyed!");

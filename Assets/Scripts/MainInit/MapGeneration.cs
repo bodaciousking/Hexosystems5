@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class MapGeneration : MonoBehaviour
 {
-
-
-
-
     public List<GameObject> tiles;
 
     public GameObject fog;
@@ -16,13 +12,14 @@ public class MapGeneration : MonoBehaviour
     public GameObject hextile;
     public GameObject planetSphere;
 
-    CameraControll cC;
     public int numPlayers;
     public float planetSize = 40;
 
+    public List<Material> mats = new List<Material>();
+
+
     void Start()
     {
-        cC = CameraControll.instance;
         for (int i = 0; i <= numPlayers -1; i++)
         {
             string holderName = "Player " + i.ToString() + " Map";
@@ -40,11 +37,13 @@ public class MapGeneration : MonoBehaviour
             GameObject planetObject = Instantiate(planetSphere, mapHolder.transform.position, Quaternion.identity);
             planetObject.transform.position += new Vector3((numRows - 1) / 2, -(planetSize/2) +1.5f, -1.5f);
             planetObject.transform.localScale *= planetSize;
-            Color planetColor = Random.ColorHSV();//Color.white;//
+            Color planetColor = Color.white;//
             planetObject.GetComponent<Renderer>().material.color = planetColor;
             planetObject.transform.parent = mapHolder;
-            Planet planet = planetObject.gameObject.AddComponent<Planet>();
-            planet.hextileList = hextileList;
+            planetObject.transform.parent = mapHolder;
+            HexoPlanet planet = planetObject.gameObject.GetComponent<HexoPlanet>();
+            planet.owningPlayerID = i;
+            planet.GetComponent<Renderer>().material = mats[i];
 
             for (int k = 1; k <= numRows; k++)
             {
@@ -57,18 +56,20 @@ public class MapGeneration : MonoBehaviour
 
                 for (int j = 0; j < rowLength; j++)
                 {
-                    GameObject newTile = Instantiate(hextile, new Vector3(k, 0, j - rowCenter), Quaternion.identity);
+                    GameObject newTile = Instantiate(hextile, new Vector3(k, 0, j - rowCenter), Quaternion.identity, rowHolder);
+                    var euler = newTile.transform.eulerAngles; //Rotate the city randomly so they look a little random.
+                    euler.y = -150;
+                    newTile.transform.eulerAngles = euler;
                     tiles.Add(newTile);
-                    newTile.transform.parent = rowHolder;
                     
                     GameObject floor = newTile.transform.Find("Main").gameObject;
-                    floor.GetComponent<Renderer>().material.color = planetColor;
+                    floor.GetComponent<Renderer>().material.color = Color.white;
                     floor.GetComponent<FloorGfx>().myColor = planetColor;
 
                     Transform cityObject = newTile.transform.Find("City");
-                    var euler = newTile.transform.eulerAngles; //Rotate the tile randomly so the cities look a little random.
-                    euler.y = Random.Range(0, 360);
-                    cityObject.eulerAngles = euler;
+                    var euler2 = newTile.transform.Find("City").eulerAngles; //Rotate the city randomly so they look a little random.
+                    euler2.y = Random.Range(0, 360);
+                    cityObject.eulerAngles = euler2;
                     cityObject.localScale += new Vector3(0, Random.Range(0f, 2f), 0);
                     cityObject.gameObject.SetActive(false);
 
@@ -85,16 +86,20 @@ public class MapGeneration : MonoBehaviour
                 else
                     rowHolder.position += new Vector3(0, 0, -0.5f);
             }
-
+            planet.hextileList = hextileList;
             //Offset the entire player's grid based on the number of players
-            int offset = 50;
             mapHolder.transform.position = mapHolder.parent.position;
-            mapHolder.transform.position += new Vector3(offset * i, 0, offset * i);
-
-
-            Transform camAnchor = new GameObject().transform;
-            camAnchor.transform.position = mapHolder.position += new Vector3(0, 0, numRows / 2);
-            //cC.camSpots.Add(camAnchor);
+            if(i == 0)
+            {
+                mapHolder.Rotate(-3F, 0, -3.4F);
+                planet.transform.position = new Vector3(10, -20, -12);
+            }
+            if (i == 1)
+            {
+                mapHolder.transform.position += new Vector3(-10, 0, 35);
+                mapHolder.Rotate(-8F, 4.2F, 0);
+                planet.transform.position += new Vector3(-7, 0, 10);
+            }
         }
         //FogGen();
     }

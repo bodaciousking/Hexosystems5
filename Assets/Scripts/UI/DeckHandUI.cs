@@ -10,8 +10,10 @@ public class DeckHandUI : MonoBehaviour
     public Transform handHolder;
     public Transform enemyHandHolder;
     public GameObject handCardButton;
+    Decks decksScript;
     Hands playerHand;
     public static DeckHandUI instance;
+    public Sprite aBack, dBack, Rback;
 
     private void Awake()
     {
@@ -49,7 +51,7 @@ public class DeckHandUI : MonoBehaviour
         handHolder.gameObject.SetActive(false);
     }
 
-    public void DrawHandUI()
+    public void DrawHiddenHandUI()
     {
         foreach (Transform item in handHolder)
         {
@@ -60,7 +62,78 @@ public class DeckHandUI : MonoBehaviour
         {
             Card cardToDraw = playerHand.hand[i];
             GameObject newCardButton = Instantiate(handCardButton);
-            newCardButton.transform.parent = handHolder;
+            newCardButton.transform.SetParent(handHolder);
+            Image cardImage = newCardButton.GetComponent<Image>();
+            TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
+            for (int j = 0; j < text.Length; j++)
+            {
+                text[j].gameObject.SetActive(false);
+            }
+            switch (cardToDraw.cardType)
+            {
+                case 0:
+                    cardImage.sprite = aBack;
+                    break;
+                case 1:
+                    cardImage.sprite = dBack;
+                    break;
+                case 2:
+                    cardImage.sprite = Rback;
+                    break;
+            }
+            Button actualButton = newCardButton.GetComponent<Button>();
+            actualButton.onClick.AddListener(() => ReturnCard(cardToDraw));
+        }
+    }
+    public void ReturnCard(Card cardToReturn)
+    {
+        playerHand.hand.Remove(cardToReturn); 
+        switch (cardToReturn.cardType)
+        {
+            case 0:
+                decksScript.attackDeck.Enqueue(cardToReturn);
+                break;
+            case 1:
+                decksScript.defenceDeck.Enqueue(cardToReturn);
+                break;
+            case 2:
+                decksScript.reconDeck.Enqueue(cardToReturn);
+                break;
+        }
+        DrawHiddenHandUI();
+    }
+
+    public void PreviewCard(Card previewCard)
+    {
+        foreach (Transform item in GameObject.Find("PreviewHolder").transform)
+        {
+            Destroy(item.gameObject);
+        }
+
+        GameObject newCardButton = Instantiate(handCardButton);
+        newCardButton.transform.SetParent(handHolder);
+        TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
+        text[0].text = previewCard.cardName;
+        text[0].color = Color.white;
+        text[1].text = previewCard.cardDescr;
+        text[1].color = Color.white;
+        text[2].text = previewCard.energyCostText;
+        text[2].color = Color.white;
+
+        newCardButton.transform.localScale *= 5;
+    }
+    public void DrawRevealedHandUI()
+    {
+        foreach (Transform item in handHolder)
+        {
+            Destroy(item.gameObject);
+        }
+
+        for (int i = 0; i < playerHand.hand.Count; i++)
+        {
+            Card cardToDraw = playerHand.hand[i];
+            GameObject newCardButton = Instantiate(handCardButton);
+            newCardButton.transform.SetParent(handHolder);
             TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
             text[0].text = cardToDraw.cardName;
             text[0].color = Color.white;
@@ -77,6 +150,7 @@ public class DeckHandUI : MonoBehaviour
     void Start()
     {
         playerHand = GameObject.Find("ClientMaster").GetComponent<Hands>();
+        decksScript = GameObject.Find("ClientMaster").GetComponent<Decks>();
     }
 
     // Update is called once per frame

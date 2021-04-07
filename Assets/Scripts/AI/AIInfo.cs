@@ -90,7 +90,7 @@ public class AIInfo : MonoBehaviour
         }
         else //There's a tie. draw from a random deck
         {
-            Debug.Log("Drew random card.");
+            //Debug.Log("Drew random card.");
             int randomNum = Random.Range(1, 3);
             if(randomNum == 1)
                 decks.aiDrawCard(decks.aiReconDeck);

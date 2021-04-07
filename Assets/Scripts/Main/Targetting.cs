@@ -14,6 +14,7 @@ public class Targetting : MonoBehaviour
 
 
 
+    CameraMovement cM;
     CityHandler cH;
 
     public TargetCondition currentCondition;
@@ -42,6 +43,7 @@ public class Targetting : MonoBehaviour
         rP = ResolutionPhase.instance;
         dHUI = DeckHandUI.instance;
         cH = GetComponent<CityHandler>();
+        cM = CameraMovement.instance;
     }
     public void SelectObjectAoE(int sizeIndex)
     {
@@ -51,6 +53,11 @@ public class Targetting : MonoBehaviour
         GameObject newObj = Instantiate(targettingObjects[sizeIndex]);
         selectedTargettingObject = newObj;
         selectedTargettingObject.SetActive(true);
+
+        if (currentCondition == TargetCondition.isEnemyTile || currentCondition == TargetCondition.isFogged)
+            cM.SwitchPos(cM.pos1);
+        else if (currentCondition == TargetCondition.isFriendlyCity)
+            cM.SwitchPos(cM.pos0);
     }
 
     public void DisableObject()

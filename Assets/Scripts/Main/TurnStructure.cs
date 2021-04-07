@@ -12,6 +12,9 @@ public class TurnStructure : MonoBehaviour
     DeckHandUI deckHandUI;
     AIInfo aiI;
     AICities aiC;
+    ResolutionUI rUI;
+    CameraMovement cM;
+    public GameObject energyUI, nextPhaseButton;
     public turnPhase currentPhase = turnPhase.Standby;
     public int numTurns = 0;
 
@@ -38,6 +41,8 @@ public class TurnStructure : MonoBehaviour
         rP = GetComponent<ResolutionPhase>();
         aiI = GetComponent<AIInfo>();
         aiC = GetComponent<AICities>();
+        cM = CameraMovement.instance;
+        rUI = GetComponent<ResolutionUI>();
     }
 
     public enum turnPhase
@@ -65,8 +70,8 @@ public class TurnStructure : MonoBehaviour
                 BeginPhaseEnergy();
                 break;
             case turnPhase.EnergyGen:
-                currentPhase = turnPhase.Recalibrate;
-                BeginPhaseRecalibrate();
+                currentPhase = turnPhase.DrawPhase;
+                BeginPhaseDraw();
                 break;
             case turnPhase.Recalibrate:
                 currentPhase = turnPhase.DrawPhase;
@@ -85,8 +90,8 @@ public class TurnStructure : MonoBehaviour
                 BeginPhaseDiscard();
                 break;
             case turnPhase.Discard:
-                currentPhase = turnPhase.Standby;
-                BeginPhaseStandby();
+                currentPhase = turnPhase.TurnTitle;
+                BeginPhaseTitle();
                 break;
         }
         //Debug.Log(currentPhase);
@@ -99,20 +104,21 @@ public class TurnStructure : MonoBehaviour
     {
         numTurns++;
         msgD.DisplayMessage("Eon " + numTurns, 1f);
+        nextPhaseButton.SetActive(true);
     }
     public void BeginPhaseEnergy()
     {
-        int generatedEnergy = 0;
-        generatedEnergy = cH.DetermineEnergyGeneratedByCities() + 10 /* 10 = baseEnergy */;
-        msgD.DisplayMessage("Energy Generated: " + generatedEnergy, 1f);
+        cH.generatedEnergy = cH.DetermineEnergyGeneratedByCities() + 4 /* 4 = baseEnergy */;
+        msgD.DisplayMessage("Energy Generated: " + cH.generatedEnergy, 1f);
         aiI.aiEnergy = aiC.DetermineEnergyGeneratedByCities();
+        energyUI.SetActive(true);
+        aiI.ResetPriorities();
+        aiI.DeterminePriorities();
     }
     public void BeginPhaseRecalibrate()
     {
         msgD.DisplayMessage("Recalibrate Phase", 1f);
         //Code for regenerating/decaying shields, etc. goes here.
-        aiI.ResetPriorities();
-        aiI.DeterminePriorities();
     }
     public void BeginPhaseDraw()
     {
@@ -131,12 +137,18 @@ public class TurnStructure : MonoBehaviour
     }
     public void BeginPhaseStrategy()
     {
+        deckHandUI.DrawRevealedHandUI();
         msgD.DisplayMessage("Strategy Phase", 1f);
         deckHandUI.DisableDeckUI();
         StartCoroutine(aiI.AiPlayCards());
     }
     public void BeginPhaseResolution()
     {
+        deckHandUI.DisableHandUI();
+        nextPhaseButton.SetActive(false);
+        energyUI.SetActive(false);
+        rUI.playerActions.Clear();
+        rUI.DisplayActionButtons();
         msgD.DisplayMessage("Resolution Phase", 1f);
         rP.BeginPlayActions();
     }
@@ -156,12 +168,6 @@ public class TurnStructure : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         NextPhase();
-    }
-
-    public void FindCamSpot()
-    {
-        CameraControll cC = Camera.main.GetComponent<CameraControll>();
-        cC.FindCoolSpot();
     }
 
     public void ToggleTest()
