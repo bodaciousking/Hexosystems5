@@ -56,7 +56,7 @@ public class AIInfo : MonoBehaviour
                 card.PlayCard(true);
                 aiEnergy -= card.energyCost;
             }
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.8f);
         }
         aiHand.Clear();
     }

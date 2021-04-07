@@ -7,12 +7,13 @@ public class Targetting : MonoBehaviour
 {
     public GameObject selectedTargettingObject;
     public List<GameObject> targettingObjects = new List<GameObject>();
+    public List<GameObject> AItargettingObjects = new List<GameObject>();
     public List<Hextile> targets = new List<Hextile>();
+    public List<Hextile> AItargets = new List<Hextile>();
     public Hextile singleTarget;
     public static Targetting instance;
     public bool recon = false;
-
-
+    public int intendedNumTargets;
 
     CameraMovement cM;
     CityHandler cH;
@@ -73,6 +74,13 @@ public class Targetting : MonoBehaviour
             targets.Add(tile);
         }
     }
+    public void AddTileToAITargets(Hextile tile)
+    {
+        if (!AItargets.Contains(tile))
+        {
+            AItargets.Add(tile);
+        }
+    }
     public void ResetColors()
     {
         for (int i = 0; i < targets.Count; i++)
@@ -123,6 +131,7 @@ public class Targetting : MonoBehaviour
 
     public void ConfirmTarget()
     {
+        Debug.Log("confirming target");
         bool validTarget = false;
         if(currentCondition == TargetCondition.isFriendlyCity)
         {
@@ -146,36 +155,90 @@ public class Targetting : MonoBehaviour
         }
         else if(currentCondition == TargetCondition.isEnemyTile)
         {
-            if(singleTarget.owningPlayerID != 0)
+            if (singleTarget.owningPlayerID != 0)
             {
                 validTarget = true;
             }
-            if (validTarget)
+            else if (targets.Count == intendedNumTargets)
             {
-                selectedTargettingObject.SetActive(false);
-
-                if (recon)
+                for (int i = 0; i < targets.Count; i++)
                 {
-                    rP.storedReconAction.target = singleTarget;
-                    rP.CompleteAction();
-                    dHUI.EnableHandUI();
-                    ResetColors();
-                    DisableObject();
-                    ClearTargets();
-                    recon = false;
-                   
+                    if (targets[i].owningPlayerID != 1)
+                    {
+                        validTarget = false;
+                        break;
+                    }
+                    else
+                        validTarget = true;
                 }
-                else
-                {
-                    rP.storedAttackAction.target = singleTarget;   
-                    rP.CompleteAction();
-                    dHUI.EnableHandUI();
-                    ResetColors();
-                    DisableObject();
-                    ClearTargets();
-                }
-                
             }
+
+                if (validTarget)
+                {
+                    selectedTargettingObject.SetActive(false);
+
+                    if (recon)
+                    {
+                        rP.storedReconAction.target = singleTarget;
+                        rP.CompleteAction();
+                        dHUI.EnableHandUI();
+                        ResetColors();
+                        DisableObject();
+                        ClearTargets();
+                        recon = false;
+
+                    }
+                    else
+                    {
+                        rP.storedAttackAction.target = singleTarget;
+                        rP.storedAttackAction.targets = new List<Hextile>(targets);
+                        rP.CompleteAction();
+                        dHUI.EnableHandUI();
+                        ResetColors();
+                        DisableObject();
+                        ClearTargets();
+                    }
+
+                }
+            
         }
+    }
+
+    public void ConfirmAITargets()
+    {
+        rP = ResolutionPhase.instance;
+        Debug.Log(rP.AIStoredAction);
+        List<Hextile> targets = new List<Hextile>(AItargets);
+        rP.AIStoredAction.targets = targets;
+        rP.CompleteAIAction();
+    }
+    public void StartFindLine(Hextile start, int objectsListIndex)
+    {
+        StartCoroutine(FindLine(start, objectsListIndex));
+    }
+    public IEnumerator FindLine(Hextile start, int objectsListIndex)
+    {
+        GameObject obj = Instantiate(AItargettingObjects[objectsListIndex]);
+        obj.transform.position = start.transform.position;
+
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < 3; i++)
+        {
+            if (AItargets.Count != 3)
+            {
+                AItargets.Clear();
+                yield return new WaitForSeconds(0.05f);
+                obj.transform.localEulerAngles += new Vector3(0, 60, 0);
+            }
+            else
+            {
+                break;
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+        Debug.Log(AItargets.Count);
+        Destroy(obj); 
+        ConfirmAITargets();
+        AItargets.Clear();
     }
 }

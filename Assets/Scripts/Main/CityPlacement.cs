@@ -102,9 +102,9 @@ public class CityPlacement : MonoBehaviour
 
     public void CreateCity()
     {
-        if (possibleCity.Count < intendedSize)
+        if (possibleCity.Count != intendedSize)
         {
-            Debug.Log("City too small!");
+            Debug.Log("Invalid City!");
             return;
         }
 

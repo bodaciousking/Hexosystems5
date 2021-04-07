@@ -19,6 +19,7 @@ public class Hextile : MonoBehaviour
     public int permanentShields;
     public int decayShields;
     public int health;
+    public int myRowLength;
 
     public bool visible = false; 
 

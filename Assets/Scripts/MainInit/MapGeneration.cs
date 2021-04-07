@@ -77,6 +77,7 @@ public class MapGeneration : MonoBehaviour
                     currentTileScript.tileLocation = new Vector2(k, j);
                     currentTileScript.owningPlayerID = i;
                     hextileList.Add(currentTileScript);
+                    currentTileScript.myRowLength = rowLength;
                 }
 
 

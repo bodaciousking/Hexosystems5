@@ -37,9 +37,10 @@ public class Decks : MonoBehaviour
 
     public void PopulateAttackDeck()
     {
-        allAttackCards.Add(new GaussCannon());
+        //allAttackCards.Add(new GaussCannon());
         allAttackCards.Add(new LaserStrike());
-        allAttackCards.Add(new ScatterShot());
+        allAttackCards.Add(new LaserStrike());
+        //allAttackCards.Add(new ScatterShot());
         //allAttackCards.Add(new ScatterShot());
         //allAttackCards.Add(new ScatterShot());
         //allAttackCards.Add(new ScatterShot());
@@ -54,9 +55,9 @@ public class Decks : MonoBehaviour
     }
     public void PopulateReconDeck()
     {
-        allReconCards.Add(new BraveExplorers());
+        //allReconCards.Add(new BraveExplorers());
         allReconCards.Add(new ScoutingDrone());
-        allReconCards.Add(new ShapeshifterInfiltrator());
+        //allReconCards.Add(new ShapeshifterInfiltrator());
 
     }
 
@@ -113,7 +114,7 @@ public class Decks : MonoBehaviour
             if (playerHand.hand.Count < 5)
             { 
                 playerHand.hand.Add(drawnCard);
-                dhUI.DrawHandUI();
+                dhUI.DrawHiddenHandUI();
                 return drawnCard;
             }
             else
