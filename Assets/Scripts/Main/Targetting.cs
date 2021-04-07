@@ -10,6 +10,9 @@ public class Targetting : MonoBehaviour
     public List<Hextile> targets = new List<Hextile>();
     public Hextile singleTarget;
     public static Targetting instance;
+    public bool recon = false;
+
+
 
     CityHandler cH;
 
@@ -122,8 +125,7 @@ public class Targetting : MonoBehaviour
             }
             if (validTarget)
             {
-                selectedTargettingObject.SetActive(false);
-
+                selectedTargettingObject.SetActive(false);         
                 rP.storedDefenceAction.effectedCity = singleTarget.containingCity;
                 rP.storedDefenceAction.target = singleTarget;
                 rP.CompleteAction();
@@ -145,12 +147,27 @@ public class Targetting : MonoBehaviour
             {
                 selectedTargettingObject.SetActive(false);
 
-                rP.storedAttackAction.target = singleTarget;
-                rP.CompleteAction();
-                dHUI.EnableHandUI();
-                ResetColors();
-                DisableObject();
-                ClearTargets();
+                if (recon)
+                {
+                    rP.storedReconAction.target = singleTarget;
+                    rP.CompleteAction();
+                    dHUI.EnableHandUI();
+                    ResetColors();
+                    DisableObject();
+                    ClearTargets();
+                    recon = false;
+                   
+                }
+                else
+                {
+                    rP.storedAttackAction.target = singleTarget;   
+                    rP.CompleteAction();
+                    dHUI.EnableHandUI();
+                    ResetColors();
+                    DisableObject();
+                    ClearTargets();
+                }
+                
             }
         }
     }

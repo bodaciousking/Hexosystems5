@@ -89,7 +89,7 @@ SphereCollider:
   m_GameObject: {fileID: 1757985049701269349}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5000001
   m_Center: {x: 0, y: 0.0000001192093, z: 0}
@@ -118,7 +118,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2851368643890339124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.022, z: 0}
+  m_LocalPosition: {x: 0, y: -0.896, z: 0}
   m_LocalScale: {x: 0.9, y: 1.722, z: 0.9}
   m_Children:
   - {fileID: 8888917208076211452}
@@ -150,6 +150,7 @@ MonoBehaviour:
   fogOfWar: {fileID: 2522095949178034563}
   myShield: {fileID: 1757985049701269349}
   myFire: {fileID: 6910082397871958839}
+  floor: {fileID: 3878728628839270418}
   owningPlayerID: 0
   permanentShields: 0
   decayShields: 0
@@ -5361,6 +5362,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5764200962286021564, guid: c12ab032da470d141a2c323bb468daa0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c12ab032da470d141a2c323bb468daa0, type: 3}

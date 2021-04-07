@@ -38,7 +38,8 @@ public class Decks : MonoBehaviour
     public void PopulateAttackDeck()
     {
         allAttackCards.Add(new GaussCannon());
-        //allAttackCards.Add(new ScatterShot());
+        allAttackCards.Add(new LaserStrike());
+        allAttackCards.Add(new ScatterShot());
         //allAttackCards.Add(new ScatterShot());
         //allAttackCards.Add(new ScatterShot());
         //allAttackCards.Add(new ScatterShot());
@@ -48,14 +49,15 @@ public class Decks : MonoBehaviour
     public void PopulateDefenceDeck()
     {
         allDefenceCards.Add(new EmergencyShield());
+        allDefenceCards.Add(new InstalledShield());
+        allDefenceCards.Add(new MetropolitanDefenseSystem());
     }
     public void PopulateReconDeck()
     {
         allReconCards.Add(new BraveExplorers());
-        allReconCards.Add(new BraveExplorers());
-        allReconCards.Add(new BraveExplorers());
-        allReconCards.Add(new BraveExplorers());
-        allReconCards.Add(new BraveExplorers());
+        allReconCards.Add(new ScoutingDrone());
+        allReconCards.Add(new ShapeshifterInfiltrator());
+
     }
 
     public Card[] ShuffleDeck(List<Card> deck)

@@ -22,6 +22,8 @@ public class TargettingObjectCollision : MonoBehaviour
             hextileRenderer.material.color = Color.yellow;
 
             targetting.singleTarget = tileScript;
+
+
         }
     }
     private void OnTriggerStay(Collider other)

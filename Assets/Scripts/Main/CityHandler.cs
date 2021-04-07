@@ -73,6 +73,17 @@ public class City
         return energy;
     }
 
+    public void ShieldCity()
+    {
+
+        for(int x = 0; x <= cityTiles.Count-1; x++)
+        {
+            cityTiles[x].shielded = true;
+        }
+        
+    }
+
+
     public void CheckDestroyed()
     {
         AICities aic = AICities.instance;

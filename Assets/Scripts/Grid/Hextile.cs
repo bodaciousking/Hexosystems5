@@ -5,7 +5,7 @@ using UnityEngine;
 public class Hextile : MonoBehaviour
 {
     public Vector2 tileLocation;
-
+    
     public bool isCity;
     public bool shielded;
     public bool blocked;
@@ -13,22 +13,25 @@ public class Hextile : MonoBehaviour
     public GameObject fogOfWar;
     public GameObject myShield;
     public GameObject myFire;
+    public GameObject floor; 
     public City containingCity;
     public int owningPlayerID;
     public int permanentShields;
     public int decayShields;
     public int health;
 
-    public bool visible = false; //Edit by Erik 
+    public bool visible = false; 
 
     private void Start()
     {
-        health = 2;
-        //tileLocation = gameObject.transform.position;
+        //floor.GetComponent<Renderer>().material.color = Color.gray;
+
+        health = 2; 
         myShield.transform.localScale = new Vector3(myShield.transform.localScale.x, myCity.transform.localScale.y + myCity.transform.localScale.y/8f, myShield.transform.localScale.z);
     }
     private void Update()
     {
+        
         if (owningPlayerID == 1)
         {
             
@@ -36,6 +39,7 @@ public class Hextile : MonoBehaviour
             {
                 myCity.SetActive(false);
                 fogOfWar.SetActive(true);
+                
             }
             else
             {
@@ -96,6 +100,7 @@ public class Hextile : MonoBehaviour
         hextileRenderer.material.color = Color.red;
     }
 
-
-    
+ 
+   
 }
+

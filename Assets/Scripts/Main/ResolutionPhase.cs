@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ResolutionPhase : MonoBehaviour
 {
+
+
     public List<AttackAction> attackActions = new List<AttackAction>();
     public List<DefenceAction> defenceActions = new List<DefenceAction>();
     public List<ReconAction> reconActions = new List<ReconAction>();
@@ -88,7 +90,7 @@ public class CardAction
     public int actionType; // 0 = Attack, 1 = Defence, 2 = Scouting
     public string actionName;
     public Hextile target;
-    public List<Hextile> targets = new List<Hextile>();
+    public List<Hextile> targets; //= new List<Hextile>();
 
     public virtual void ExecuteAction()
     {
@@ -109,7 +111,8 @@ public class DefenceAction : CardAction
 
 public class ReconAction : CardAction
 {
-
+    public GameObject map1;
+    public GameObject map2;
 }
 // ATTACK ACTIONS
 
@@ -132,6 +135,38 @@ public class ScatterShotAction : AttackAction
     }
 }
 
+public class LaserStrikeAction : AttackAction
+{
+    public override void ExecuteAction()
+    {
+
+        base.ExecuteAction();
+
+       
+        //Debug.Log(clientMaster.GetComponent<Targetting>().targets);
+        //targets[0]
+
+        //for (int i = 0; i < targets.Count; i++)
+        //{
+        //    Hextile hextileObject = targets[i];
+
+        //    if (hextileObject.isCity)
+        //    {
+ 
+        //        Transform gfx = hextileObject.transform.Find("Main");
+        //        Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+        //        hextileRenderer.material.color = Color.red;
+
+        //        hextileObject.TakeDamage(damage);
+        //        hextileObject.visible = true;
+        //    }
+        //}
+
+
+       // target.TakeDamage(damage);
+    }
+}//needs work;
+
 public class GuassCannonAction : AttackAction
 {
     public override void ExecuteAction()
@@ -141,6 +176,7 @@ public class GuassCannonAction : AttackAction
         target.TakeDamage(damage);
     }
 }
+
 
 // DEFENSE ACTIONS
 public class EmergencyShieldAction : DefenceAction
@@ -154,6 +190,31 @@ public class EmergencyShieldAction : DefenceAction
     }
 }
 
+public class InstalledShieldAction : DefenceAction
+{
+    public override void ExecuteAction()
+    {
+        base.ExecuteAction();
+
+        target.shielded = true;
+        target.decayShields += shieldStrength;
+    }
+}
+
+public class MetropolitanDefenseSystemAction : DefenceAction
+{
+    public override void ExecuteAction()
+    {
+        base.ExecuteAction();
+
+        target.shielded = true;
+        target.decayShields += shieldStrength;
+        target.containingCity.ShieldCity();
+    }
+}
+
+
+
 //RECON ACTIONS
 
 public class BraveExplorersAction : ReconAction
@@ -163,6 +224,7 @@ public class BraveExplorersAction : ReconAction
     {
         playedByAI = _playedByAI;
     }
+
     public override void ExecuteAction()
     {
         base.ExecuteAction();
@@ -188,3 +250,170 @@ public class BraveExplorersAction : ReconAction
         }
     }
 }
+
+public class ScoutingDroneAction : ReconAction
+{
+    bool playedByAI;
+    public ScoutingDroneAction(bool _playedByAI)
+    {
+        playedByAI = _playedByAI;
+    }
+
+    public override void ExecuteAction()
+    {
+        map1 = GameObject.Find("Player 0 Map");
+        map2 = GameObject.Find("Player 1 Map");
+
+        base.ExecuteAction();
+
+        GameObject hextileObject = target.gameObject;
+        Transform gfx = hextileObject.transform.Find("Main");
+        Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+        hextileRenderer.material.color = Color.blue;
+
+        int mid = 0;
+        int top = 0;
+        int bottom = 0;
+        int left = 0;
+        int right = 0; 
+
+        target.visible = true;
+        if (!playedByAI)
+        {
+            List<Hextile> hextileList = map2.transform.GetChild(0).GetComponent<Planet>().hextileList;
+
+            for (int x = 0; x < hextileList.Count; x++)
+            {
+                if (target.tileLocation == hextileList[x].GetComponent<Hextile>().tileLocation)
+                {
+                    //mid = x;
+                    //top = x - 1;
+                    //bottom = x + 1;
+                    //left = top / 2;
+                    //Debug.Log("mid: " + mid + " Top: " + top + " bottom: " + bottom + " left: " + left);
+                    
+                    hextileObject = hextileList[x + 1].gameObject;
+                    gfx = hextileObject.transform.Find("Main");
+                    hextileRenderer = gfx.GetComponent<Renderer>();
+                    hextileRenderer.material.color = Color.blue;
+
+                    hextileObject = hextileList[x - 1].gameObject;
+                    gfx = hextileObject.transform.Find("Main");
+                    hextileRenderer = gfx.GetComponent<Renderer>();
+                    hextileRenderer.material.color = Color.blue;
+
+
+                }
+            }
+        }
+        else
+        {
+            List<Hextile> hextileList = map1.transform.GetChild(0).GetComponent<Planet>().hextileList;
+
+            for (int x = 0; x < hextileList.Count; x++)
+            {
+                if (target.tileLocation == hextileList[x].GetComponent<Hextile>().tileLocation)
+                {
+                    
+
+
+
+
+                    hextileObject = hextileList[x + 1].gameObject;
+                    gfx = hextileObject.transform.Find("Main");
+                    hextileRenderer = gfx.GetComponent<Renderer>();
+                    hextileRenderer.material.color = Color.blue;
+
+                    hextileObject = hextileList[x - 1].gameObject;
+                    gfx = hextileObject.transform.Find("Main");
+                    hextileRenderer = gfx.GetComponent<Renderer>();
+                    hextileRenderer.material.color = Color.blue;
+
+                    hextileList[x + 1].visible = true;
+                    hextileList[x - 1].visible = true;
+
+                }
+            }
+        }
+        
+
+    }
+}
+
+public class ShapeshifterInfiltratorAction : ReconAction
+{
+    bool playedByAI;
+    public ShapeshifterInfiltratorAction(bool _playedByAI)
+    {
+        playedByAI = _playedByAI;
+    }
+
+    public override void ExecuteAction()
+    {
+        map1 = GameObject.Find("Player 0 Map");
+        map2 = GameObject.Find("Player 1 Map");
+
+        base.ExecuteAction();
+
+        if (!playedByAI)
+        {
+            List<Hextile> hextileList = map2.transform.GetChild(0).GetComponent<Planet>().hextileList;
+            List<Hextile> cityList = new List<Hextile>();
+
+            for (int x = 0; x < hextileList.Count; x++)
+            {
+                if (hextileList[x].GetComponent<Hextile>().isCity)
+                {
+                    if(hextileList[x].GetComponent<Hextile>().visible == false)
+                    {
+                        cityList.Add(hextileList[x]);
+                    }
+                    
+
+                }
+            }
+            int rand = Random.Range(0, cityList.Count);
+
+            GameObject hextileObject = cityList[rand].gameObject;
+            Transform gfx = hextileObject.transform.Find("Main");
+            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+            hextileRenderer.material.color = Color.blue;
+
+            cityList[rand].visible = true;
+            
+           
+        }
+        else
+        {
+            List<Hextile> hextileList = map1.transform.GetChild(0).GetComponent<Planet>().hextileList;
+            List<Hextile> cityList = new List<Hextile>();
+
+            for (int x = 0; x < hextileList.Count; x++)
+            {
+                if (hextileList[x].GetComponent<Hextile>().isCity)
+                {
+
+                    if (hextileList[x].GetComponent<Hextile>().visible == false)
+                    {
+                        cityList.Add(hextileList[x]);
+                    }
+
+                }
+            }
+            int rand = Random.Range(0, cityList.Count);
+
+            GameObject hextileObject = cityList[rand].gameObject;
+            Transform gfx = hextileObject.transform.Find("Main");
+            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+            hextileRenderer.material.color = Color.blue;
+
+            cityList[rand].visible = true;
+        }
+
+    }
+}
+
+
+
+
+
