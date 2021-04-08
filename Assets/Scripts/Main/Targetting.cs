@@ -226,9 +226,9 @@ public class Targetting : MonoBehaviour
         {
             if (AItargets.Count != 3)
             {
+                obj.transform.localEulerAngles += new Vector3(0, 60, 0);
                 AItargets.Clear();
                 yield return new WaitForSeconds(0.05f);
-                obj.transform.localEulerAngles += new Vector3(0, 60, 0);
             }
             else
             {

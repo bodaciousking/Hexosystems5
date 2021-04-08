@@ -104,7 +104,7 @@ public class TurnStructure : MonoBehaviour
     {
         numTurns++;
         msgD.DisplayMessage("Eon " + numTurns, 1f);
-        nextPhaseButton.SetActive(true);
+        SetNextTurnTimer(2f);
     }
     public void BeginPhaseEnergy()
     {
@@ -112,6 +112,7 @@ public class TurnStructure : MonoBehaviour
         msgD.DisplayMessage("Energy Generated: " + cH.generatedEnergy, 1f);
         aiI.aiEnergy = aiC.DetermineEnergyGeneratedByCities();
         energyUI.SetActive(true);
+        SetNextTurnTimer(2f);
         aiI.ResetPriorities();
         aiI.DeterminePriorities();
     }
@@ -122,6 +123,7 @@ public class TurnStructure : MonoBehaviour
     }
     public void BeginPhaseDraw()
     {
+        nextPhaseButton.SetActive(true);
         msgD.DisplayMessage("Draw Phase", 1f);
 
         decks.PrepareDecks();
@@ -154,7 +156,9 @@ public class TurnStructure : MonoBehaviour
     }
     public void BeginPhaseDiscard()
     {
-        msgD.DisplayMessage("Discard Phase", 1f);
+        //msgD.DisplayMessage("Discard Phase", 1f);
+        SetNextTurnTimer(0.1f);
+        nextPhaseButton.SetActive(false);
         //Code for discarding cards goes here.
     }
 
