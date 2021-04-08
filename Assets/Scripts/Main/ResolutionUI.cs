@@ -31,11 +31,6 @@ public class ResolutionUI : MonoBehaviour
         string actionButtonHolder = "ActionsList";
         Transform actionsHolder = GameObject.Find(actionButtonHolder).transform;
 
-        foreach (Transform item in actionsHolder)
-        {
-            Destroy(item.gameObject);
-        }
-
         for (int i = 0; i < playerActions.Count; i++)
         {
             GameObject newButton = Instantiate(actionButton, actionsHolder);
@@ -43,6 +38,16 @@ public class ResolutionUI : MonoBehaviour
             newButton.GetComponentInChildren<TextMeshProUGUI>().text = playerActions[i].actionName;
             ResoActionButton rAP = newButton.GetComponent<ResoActionButton>();
             rAP.myAction = playerActions[i];
+        }
+    }
+    public void HideActionButtons()
+    {
+        string actionButtonHolder = "ActionsList";
+        Transform actionsHolder = GameObject.Find(actionButtonHolder).transform;
+
+        foreach (Transform item in actionsHolder)
+        {
+            Destroy(item.gameObject);
         }
     }
 }

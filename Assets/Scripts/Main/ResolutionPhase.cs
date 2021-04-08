@@ -124,7 +124,6 @@ public class ResolutionPhase : MonoBehaviour
         }
         ClearActions();
         tS.NextPhase();
-        tS.nextPhaseButton.SetActive(true);
     }
 }
 
@@ -182,7 +181,6 @@ public class LaserStrikeAction : AttackAction
     {
         base.ExecuteAction();
 
-        Debug.Log(targets.Count);
         for (int i = 0; i < targets.Count; i++)
         {
             Hextile hextileObject = targets[i];
@@ -328,16 +326,6 @@ public class ScoutingDroneAction : ReconAction
             {
                 if (target.tileLocation == hextileList[x].GetComponent<Hextile>().tileLocation)
                 {
-                    hextileObject = hextileList[x + 1].gameObject;
-                    gfx = hextileObject.transform.Find("Main");
-                    hextileRenderer = gfx.GetComponent<Renderer>();
-                    hextileRenderer.material.color = Color.blue;
-
-                    hextileObject = hextileList[x - 1].gameObject;
-                    gfx = hextileObject.transform.Find("Main");
-                    hextileRenderer = gfx.GetComponent<Renderer>();
-                    hextileRenderer.material.color = Color.blue;
-
                     hextileList[x + 1].visible = true;
                     hextileList[x - 1].visible = true;
 

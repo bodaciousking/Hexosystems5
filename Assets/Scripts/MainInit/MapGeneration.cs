@@ -92,7 +92,7 @@ public class MapGeneration : MonoBehaviour
             mapHolder.transform.position = mapHolder.parent.position;
             if(i == 0)
             {
-                mapHolder.Rotate(-3F, 0, -3.4F);
+                mapHolder.Rotate(-3F, -1.5f, -3.4F);
                 planet.transform.position = new Vector3(10, -20, -12);
             }
             if (i == 1)

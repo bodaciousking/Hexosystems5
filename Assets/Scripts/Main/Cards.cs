@@ -3,14 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
     public class Cards : MonoBehaviour
-{
-    
+    {
+    public static Cards instance;
+    public List<Sprite> cardImages = new List<Sprite>();
+
+    private void Awake()
+    {
+        if(instance != null)
+        {
+            Debug.Log("Too many Cards scripts!");
+            return;
+        }
+        instance = this;
+    }
 }
 
     public class Card
 {
+    public int imageReference;
     public int cardID;
     public string cardName;
     public string cardDescr;
@@ -147,6 +160,7 @@ using UnityEngine;
     {
         cardID = 001;
         cardType = 0;
+        imageReference = 0;
         cardName = "Scatter Shot";
         cardDescr = "Hit 3 random hexes and apply 1 damage.";
         energyCostText = "2";
@@ -181,6 +195,7 @@ using UnityEngine;
     {
         cardID = 003;
         cardType = 0;
+        imageReference = 1;
         cardName = "Laser Strike";
         cardDescr = "Target 3 tiles in a line and apply 1 damage to each one of them. Shield Piercing(Keyword: The attack ignores shields)";
         energyCostText = "2";
@@ -238,7 +253,8 @@ using UnityEngine;
         public GaussCannon()
         {
             cardID = 002;
-            cardType = 0;
+        imageReference = 2;
+        cardType = 0;
             cardName = "Gauss Cannon";
             cardDescr = "Target 1 tile and apply 1 damage.";
             energyCostText = "3";
@@ -289,6 +305,7 @@ public class EmergencyShield : DefenceCard
     {
         cardID = 101;
         cardType = 1;
+        imageReference = 3;
         cardName = "Emergency Shield";
         cardDescr = "Apply 1 Shield point to a target hex. Shield lasts for one turn or until destroyed.";
         energyCost = 1;
@@ -341,7 +358,8 @@ public class EmergencyShield : DefenceCard
         {
             cardID = 101;
             cardType = 1;
-            cardName = "Installed Shield";
+        imageReference = 4;
+        cardName = "Installed Shield";
             cardDescr = "Apply 1 Shield point to a target hex.";
             energyCost = 3;
             energyCostText = "3";
@@ -382,7 +400,8 @@ public class EmergencyShield : DefenceCard
         {
             cardID = 101;
             cardType = 1;
-            cardName = "Metropolitan Defense System";
+        imageReference = 5;
+        cardName = "Metropolitan Defense System";
             cardDescr = "Target a city and apply 1 shield to each of its urban tiles.";
             energyCost = 5;
             energyCostText = "5";
@@ -424,7 +443,8 @@ public class EmergencyShield : DefenceCard
         {
             cardID = 201;
             cardType = 2;
-            cardName = "Brave Explorers";
+        imageReference = 6;
+        cardName = "Brave Explorers";
             cardDescr = "Scout 3 random hexes. Vision lasts 1 turn.";
             energyCost = 2;
             energyCostText = "2";
@@ -435,7 +455,6 @@ public class EmergencyShield : DefenceCard
 
         public override void PlayCard(bool playedByAI)
         {
-            base.PlayCard(playedByAI);
 
         BraveExplorersAction bea = new BraveExplorersAction(playedByAI);
         bea.targets = SelectRandomHextile(playedByAI);
@@ -444,6 +463,7 @@ public class EmergencyShield : DefenceCard
         bea.representedCard = this;
         myAction = bea;
 
+            base.PlayCard(playedByAI);
         DeckHandUI dhUI = DeckHandUI.instance;
             dhUI.EnableHandUI();
 
@@ -460,6 +480,7 @@ public class ScoutingDrone : ReconCard
     {
         cardID = 201;
         cardType = 2;
+        imageReference = 7;
         cardName = "Scouting Drone";
         cardDescr = "Recon one tile and 2 additional tiles adjacent to it.";
         energyCost = 3;
@@ -513,6 +534,7 @@ public class ScoutingDrone : ReconCard
     {
         cardID = 201;
         cardType = 2;
+        imageReference = 8;
         cardName = "Shapeshifter Infiltrator";
         cardDescr = "Get vision of a random enemy city tile that has not been reconned yet";
         energyCost = 3;
@@ -524,7 +546,6 @@ public class ScoutingDrone : ReconCard
 
     public override void PlayCard(bool playedByAI)
     {
-        base.PlayCard(playedByAI);
 
         ShapeshifterInfiltratorAction sia = new ShapeshifterInfiltratorAction(playedByAI);
         sia.targets = SelectRandomHextile(playedByAI);
@@ -533,6 +554,7 @@ public class ScoutingDrone : ReconCard
         sia.representedCard = this;
         myAction = sia;
 
+        base.PlayCard(playedByAI);
         DeckHandUI dhUI = DeckHandUI.instance;
         dhUI.EnableHandUI();
 

@@ -31,6 +31,8 @@ public class AICities : MonoBehaviour
         if (numCities <= 0)
         {
             Debug.Log("Game over! Player Wins");
+            EndGameHandler eGH = GetComponent<EndGameHandler>();
+            eGH.DisplayImage(eGH.vImage);
         }
         //else
            // Debug.Log("cities remaining: " + numCities);

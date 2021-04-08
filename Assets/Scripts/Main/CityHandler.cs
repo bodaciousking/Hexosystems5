@@ -43,6 +43,8 @@ public class CityHandler : MonoBehaviour
         if (numCities <= 0)
         {
             Debug.Log("Game over! AI Wins");
+            EndGameHandler eGH = GetComponent<EndGameHandler>();
+            eGH.DisplayImage(eGH.dImage);
         }
     }
 

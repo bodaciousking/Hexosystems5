@@ -51,6 +51,8 @@ public class Targetting : MonoBehaviour
         if (selectedTargettingObject)
             Destroy(selectedTargettingObject);
 
+        ResolutionUI.instance.HideActionButtons();
+
         GameObject newObj = Instantiate(targettingObjects[sizeIndex]);
         selectedTargettingObject = newObj;
         selectedTargettingObject.SetActive(true);

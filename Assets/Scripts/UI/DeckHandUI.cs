@@ -12,6 +12,7 @@ public class DeckHandUI : MonoBehaviour
     public GameObject handCardButton;
     Decks decksScript;
     Hands playerHand;
+    Cards cards;
     public static DeckHandUI instance;
     public Sprite aBack, dBack, Rback;
 
@@ -134,6 +135,8 @@ public class DeckHandUI : MonoBehaviour
             Card cardToDraw = playerHand.hand[i];
             GameObject newCardButton = Instantiate(handCardButton);
             newCardButton.transform.SetParent(handHolder);
+            Image cardImage = newCardButton.GetComponent<Image>();
+            //cardImage.sprite = cards.cardImages[cardToDraw.imageReference]; // For drawing Card Fronts!!
             TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
             text[0].text = cardToDraw.cardName;
             text[0].color = Color.white;
@@ -150,6 +153,7 @@ public class DeckHandUI : MonoBehaviour
     void Start()
     {
         playerHand = GameObject.Find("ClientMaster").GetComponent<Hands>();
+        cards = Cards.instance;
         decksScript = GameObject.Find("ClientMaster").GetComponent<Decks>();
     }
 

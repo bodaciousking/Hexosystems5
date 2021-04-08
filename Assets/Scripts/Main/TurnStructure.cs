@@ -108,7 +108,7 @@ public class TurnStructure : MonoBehaviour
     }
     public void BeginPhaseEnergy()
     {
-        cH.generatedEnergy = cH.DetermineEnergyGeneratedByCities() + 4 /* 4 = baseEnergy */;
+        cH.generatedEnergy = cH.DetermineEnergyGeneratedByCities() + 3 /* 4 = baseEnergy */;
         msgD.DisplayMessage("Energy Generated: " + cH.generatedEnergy, 1f);
         aiI.aiEnergy = aiC.DetermineEnergyGeneratedByCities();
         energyUI.SetActive(true);
@@ -147,17 +147,18 @@ public class TurnStructure : MonoBehaviour
     public void BeginPhaseResolution()
     {
         deckHandUI.DisableHandUI();
+        Hands.instance.ClearHand();
         nextPhaseButton.SetActive(false);
         energyUI.SetActive(false);
         rUI.playerActions.Clear();
-        rUI.DisplayActionButtons();
+        rUI.HideActionButtons();
         msgD.DisplayMessage("Resolution Phase", 1f);
         rP.BeginPlayActions();
     }
     public void BeginPhaseDiscard()
     {
         //msgD.DisplayMessage("Discard Phase", 1f);
-        SetNextTurnTimer(0.1f);
+        SetNextTurnTimer(2f);
         nextPhaseButton.SetActive(false);
         //Code for discarding cards goes here.
     }
