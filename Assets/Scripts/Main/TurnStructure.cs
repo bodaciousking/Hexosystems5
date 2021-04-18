@@ -13,6 +13,7 @@ public class TurnStructure : MonoBehaviour
     AIInfo aiI;
     AICities aiC;
     ResolutionUI rUI;
+    Hands handScript;
     CameraMovement cM;
     public GameObject energyUI, nextPhaseButton;
     public turnPhase currentPhase = turnPhase.Standby;
@@ -43,6 +44,7 @@ public class TurnStructure : MonoBehaviour
         aiC = GetComponent<AICities>();
         cM = CameraMovement.instance;
         rUI = GetComponent<ResolutionUI>();
+        handScript = Hands.instance;
     }
 
     public enum turnPhase
@@ -127,6 +129,7 @@ public class TurnStructure : MonoBehaviour
         msgD.DisplayMessage("Draw Phase", 1f);
 
         decks.PrepareDecks();
+        handScript.ClearHand();
         deckHandUI.EnableDeckUI();
         deckHandUI.EnableHandUI();
         deckHandUI.EnableAIHandUI();

@@ -21,7 +21,6 @@ public class ResoActionButton : MonoBehaviour
         if (rP.attackActions.Contains(myAction))
         {
             rP.attackActions.Remove(myAction);
-            Debug.Log("asd");
         }
         else if (rP.defenceActions.Contains(myAction))
         {

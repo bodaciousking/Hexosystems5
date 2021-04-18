@@ -54,6 +54,8 @@ public class DeckHandUI : MonoBehaviour
 
     public void DrawHiddenHandUI()
     {
+        GridLayoutGroup gLG = handHolder.GetComponent<GridLayoutGroup>();
+        gLG.enabled = true;
         foreach (Transform item in handHolder)
         {
             Destroy(item.gameObject);
@@ -104,27 +106,11 @@ public class DeckHandUI : MonoBehaviour
         DrawHiddenHandUI();
     }
 
-    public void PreviewCard(Card previewCard)
-    {
-        foreach (Transform item in GameObject.Find("PreviewHolder").transform)
-        {
-            Destroy(item.gameObject);
-        }
-
-        GameObject newCardButton = Instantiate(handCardButton);
-        newCardButton.transform.SetParent(handHolder);
-        TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
-        text[0].text = previewCard.cardName;
-        text[0].color = Color.white;
-        text[1].text = previewCard.cardDescr;
-        text[1].color = Color.white;
-        text[2].text = previewCard.energyCostText;
-        text[2].color = Color.white;
-
-        newCardButton.transform.localScale *= 5;
-    }
     public void DrawRevealedHandUI()
     {
+        GridLayoutGroup gLG = handHolder.GetComponent<GridLayoutGroup>();
+        gLG.enabled = true;
+
         foreach (Transform item in handHolder)
         {
             Destroy(item.gameObject);
@@ -135,6 +121,9 @@ public class DeckHandUI : MonoBehaviour
             Card cardToDraw = playerHand.hand[i];
             GameObject newCardButton = Instantiate(handCardButton);
             newCardButton.transform.SetParent(handHolder);
+            newCardButton.transform.localScale = Vector3.one;
+            CardZoom cZ = newCardButton.GetComponent<CardZoom>();
+            cZ.revealed = true;
             Image cardImage = newCardButton.GetComponent<Image>();
             //cardImage.sprite = cards.cardImages[cardToDraw.imageReference]; // For drawing Card Fronts!!
             TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();

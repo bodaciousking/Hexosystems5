@@ -28,6 +28,7 @@ public class ResolutionUI : MonoBehaviour
     }
     public void DisplayActionButtons()
     {
+        HideActionButtons();
         string actionButtonHolder = "ActionsList";
         Transform actionsHolder = GameObject.Find(actionButtonHolder).transform;
 

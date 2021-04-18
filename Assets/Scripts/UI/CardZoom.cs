@@ -1,30 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
 public class CardZoom : MonoBehaviour
 {
     DeckHandUI dhUI;
-    private bool isHeld = false;
-    public Vector3 currentPos;
-    public int offset = 175;
+    public bool revealed;
+    public Vector3 mySize;
+    public int offset = 0;
 
-    void Start()
-    {
-        currentPos = gameObject.transform.position;
-    }
     public void onPointerEnterFunction()
     {
-        gameObject.transform.localScale = new Vector3(3, 3, 3);
-        gameObject.transform.localPosition += new Vector3(0, offset, 0);
-        gameObject.layer = 8;
+        if (revealed)
+        {
+            mySize = gameObject.transform.localScale;
+            gameObject.transform.localScale = new Vector3(3, 3, 3);
+            gameObject.transform.localPosition += new Vector3(0, offset, 0);
+            gameObject.transform.SetAsFirstSibling();
+            GridLayoutGroup gLG = transform.parent.GetComponent<GridLayoutGroup>();
+            if (gLG)
+                gLG.enabled = false;
+        }
     }
     public void onPointerExitFunction()
     {
-        gameObject.layer = 5;
-        gameObject.transform.localScale = new Vector3(.7f, .6f, .6f);
-        gameObject.transform.localPosition -= new Vector3(0, offset, 0);
+        if (revealed)
+        {
+            gameObject.transform.localScale = mySize;
+            gameObject.transform.localPosition -= new Vector3(0, offset, 0);
+        }
     } 
 }

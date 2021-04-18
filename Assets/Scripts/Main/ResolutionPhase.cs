@@ -103,27 +103,31 @@ public class ResolutionPhase : MonoBehaviour
 
     public IEnumerator ActionLoop()
     {
-        for (int i = 0; i < attackActions.Count; i++)
+        for (int i = 0; i < reconActions.Count; i++)
         {
-            CardAction aA = attackActions[i];
-            aA.ExecuteAction();
+            CardAction rA = reconActions[i];
+            rA.ExecuteAction();
+            yield return new WaitForSeconds(1f);
         }
-        yield return new WaitForSeconds(1f);
+        ClearActions();
+        tS.NextPhase();
 
         for (int i = 0; i < defenceActions.Count; i++)
         {
             CardAction dA = defenceActions[i];
             dA.ExecuteAction();
+            yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(1f);
 
-        for (int i = 0; i < reconActions.Count; i++)
+
+        for (int i = 0; i < attackActions.Count; i++)
         {
-            CardAction rA = reconActions[i];
-            rA.ExecuteAction();
+            CardAction aA = attackActions[i];
+            aA.ExecuteAction();
+            yield return new WaitForSeconds(1f);
         }
-        ClearActions();
-        tS.NextPhase();
+        yield return new WaitForSeconds(1f);
     }
 }
 
@@ -374,7 +378,6 @@ public class ShapeshifterInfiltratorAction : ReconAction
             GameObject hextileObject = cityList[rand].gameObject;
             Transform gfx = hextileObject.transform.Find("Main");
             Renderer hextileRenderer = gfx.GetComponent<Renderer>();
-            hextileRenderer.material.color = Color.blue;
 
             cityList[rand].visible = true;
             
@@ -402,7 +405,6 @@ public class ShapeshifterInfiltratorAction : ReconAction
             GameObject hextileObject = cityList[rand].gameObject;
             Transform gfx = hextileObject.transform.Find("Main");
             Renderer hextileRenderer = gfx.GetComponent<Renderer>();
-            hextileRenderer.material.color = Color.blue;
 
             cityList[rand].visible = true;
         }

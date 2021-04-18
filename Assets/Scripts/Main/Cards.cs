@@ -46,37 +46,40 @@ using UnityEngine.UI;
         ResolutionUI rUI = ResolutionUI.instance;
         if (!playedByAI)
         {
-            Hands hand = Hands.instance;
-            hand.hand.Remove(this);
-            dHUI.DrawRevealedHandUI();
-            dHUI.DisableHandUI();
-
-            if (targetType == TargetType.selectTarget)
+            if (cH.generatedEnergy >= energyCost)
             {
-                Targetting targetting = Targetting.instance;
-                switch (cardType)
+                Hands hand = Hands.instance;
+                hand.hand.Remove(this);
+                dHUI.DrawRevealedHandUI();
+                dHUI.DisableHandUI();
+
+                if (targetType == TargetType.selectTarget)
                 {
-                    case 0:
-                        targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
-                        targetting.SelectObjectAoE(targetSize);
-                        break;
-                    case 1:
-                        targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
-                        targetting.SelectObjectAoE(targetSize);
-                        break;
-                    case 2:
-                        targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
-                        targetting.SelectObjectAoE(targetSize);
-                        break;
+                    Targetting targetting = Targetting.instance;
+                    switch (cardType)
+                    {
+                        case 0:
+                            targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+                            targetting.SelectObjectAoE(targetSize);
+                            break;
+                        case 1:
+                            targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
+                            targetting.SelectObjectAoE(targetSize);
+                            break;
+                        case 2:
+                            targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+                            targetting.SelectObjectAoE(targetSize);
+                            break;
+                    }
                 }
-            }
-            else
-            {
-                rUI.playerActions.Add(myAction);
-                rUI.DisplayActionButtons();
-            }
+                else
+                {
+                    rUI.playerActions.Add(myAction);
+                    rUI.DisplayActionButtons();
+                }
 
-            cH.generatedEnergy -= energyCost;
+                cH.generatedEnergy -= energyCost;
+            }
         }
     }
 
