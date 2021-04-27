@@ -66,6 +66,7 @@ public class DeckHandUI : MonoBehaviour
             Card cardToDraw = playerHand.hand[i];
             GameObject newCardButton = Instantiate(handCardButton);
             newCardButton.transform.SetParent(handHolder);
+            newCardButton.transform.localScale = Vector3.one;
             Image cardImage = newCardButton.GetComponent<Image>();
             TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
             for (int j = 0; j < text.Length; j++)
@@ -119,23 +120,26 @@ public class DeckHandUI : MonoBehaviour
         for (int i = 0; i < playerHand.hand.Count; i++)
         {
             Card cardToDraw = playerHand.hand[i];
-            GameObject newCardButton = Instantiate(handCardButton);
-            newCardButton.transform.SetParent(handHolder);
-            newCardButton.transform.localScale = Vector3.one;
-            CardZoom cZ = newCardButton.GetComponent<CardZoom>();
-            cZ.revealed = true;
-            Image cardImage = newCardButton.GetComponent<Image>();
-            //cardImage.sprite = cards.cardImages[cardToDraw.imageReference]; // For drawing Card Fronts!!
-            TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
-            text[0].text = cardToDraw.cardName;
-            text[0].color = Color.white;
-            text[1].text = cardToDraw.cardDescr;
-            text[1].color = Color.white;
-            text[2].text = cardToDraw.energyCostText;
-            text[2].color = Color.white;
+            if (CityHandler.instance.generatedEnergy > cardToDraw.energyCost)
+            {
+                GameObject newCardButton = Instantiate(handCardButton);
+                newCardButton.transform.SetParent(handHolder);
+                newCardButton.transform.localScale = Vector3.one;
+                CardZoom cZ = newCardButton.GetComponent<CardZoom>();
+                cZ.revealed = true;
+                Image cardImage = newCardButton.GetComponent<Image>();
+                //cardImage.sprite = cards.cardImages[cardToDraw.imageReference]; // For drawing Card Fronts!!
+                TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
+                text[0].text = cardToDraw.cardName;
+                text[0].color = Color.white;
+                text[1].text = cardToDraw.cardDescr;
+                text[1].color = Color.white;
+                text[2].text = cardToDraw.energyCostText;
+                text[2].color = Color.white;
 
-            Button actualButton = newCardButton.GetComponent<Button>();
-            actualButton.onClick.AddListener(() => cardToDraw.PlayCard(false));
+                Button actualButton = newCardButton.GetComponent<Button>();
+                actualButton.onClick.AddListener(() => cardToDraw.PlayCard(false));
+            }
         }
     }
     // Start is called before the first frame update

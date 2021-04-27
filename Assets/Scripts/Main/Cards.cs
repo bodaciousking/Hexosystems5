@@ -40,14 +40,19 @@ using UnityEngine.UI;
     public virtual void PlayCard(bool playedByAI)
     {
         aIPlay = playedByAI;
-        Debug.Log("Playing " + cardName + "...");
         DeckHandUI dHUI = DeckHandUI.instance;
         CityHandler cH = CityHandler.instance;
         ResolutionUI rUI = ResolutionUI.instance;
         if (!playedByAI)
         {
-            if (cH.generatedEnergy >= energyCost)
+            if (cH.generatedEnergy < energyCost)
             {
+                Debug.Log("Not enough Energy.");
+                return;
+            }
+            else if (cH.generatedEnergy >= energyCost)
+            {
+                Debug.Log("Playing " + cardName + "...");
                 Hands hand = Hands.instance;
                 hand.hand.Remove(this);
                 dHUI.DrawRevealedHandUI();
@@ -201,8 +206,8 @@ using UnityEngine.UI;
         imageReference = 1;
         cardName = "Laser Strike";
         cardDescr = "Target 3 tiles in a line and apply 1 damage to each one of them. Shield Piercing(Keyword: The attack ignores shields)";
-        energyCostText = "2";
-        energyCost = 2;
+        energyCostText = "4";
+        energyCost = 4;
         targetType = TargetType.selectTarget;
         numTargets = 3;
         damageDealt = 1;
@@ -467,9 +472,10 @@ public class EmergencyShield : DefenceCard
         myAction = bea;
 
             base.PlayCard(playedByAI);
-        DeckHandUI dhUI = DeckHandUI.instance;
+            DeckHandUI dhUI = DeckHandUI.instance;
             dhUI.EnableHandUI();
 
+        Debug.Log("A");
 
             ResolutionPhase rP = ResolutionPhase.instance;
             rP.reconActions.Add(bea);

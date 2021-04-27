@@ -5,6 +5,7 @@ using UnityEngine;
 public class ResoActionButton : MonoBehaviour
 {
     public CardAction myAction;
+    CityHandler cH;
     ResolutionPhase rP;
     ResolutionUI rUI;
     Hands hands;
@@ -13,6 +14,7 @@ public class ResoActionButton : MonoBehaviour
     public void CancelAction()
     {
         Debug.Log("Cancelling");
+        cH = CityHandler.instance;
         rP = ResolutionPhase.instance;
         rUI = ResolutionUI.instance;
         hands = Hands.instance;
@@ -31,6 +33,7 @@ public class ResoActionButton : MonoBehaviour
             rP.reconActions.Remove(myAction);
         }
 
+        cH.generatedEnergy += myAction.representedCard.energyCost;
         hands.hand.Add(myAction.representedCard);
         dHUI.DrawRevealedHandUI();
         rUI.DisplayActionButtons();

@@ -81,7 +81,7 @@ public class ResolutionPhase : MonoBehaviour
         }
 
         CameraMovement cM = CameraMovement.instance;
-        cM.SwitchPos(cM.posN);
+        //cM.SwitchPos(cM.posN);
 
         rUI.playerActions.Add(completedAction);
         completedAction = null;
@@ -103,14 +103,14 @@ public class ResolutionPhase : MonoBehaviour
 
     public IEnumerator ActionLoop()
     {
+        Debug.Log(attackActions.Count+ " "+ defenceActions.Count + " " + reconActions.Count);
         for (int i = 0; i < reconActions.Count; i++)
         {
             CardAction rA = reconActions[i];
             rA.ExecuteAction();
             yield return new WaitForSeconds(1f);
         }
-        ClearActions();
-        tS.NextPhase();
+        yield return new WaitForSeconds(1f);
 
         for (int i = 0; i < defenceActions.Count; i++)
         {
@@ -120,7 +120,6 @@ public class ResolutionPhase : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
 
-
         for (int i = 0; i < attackActions.Count; i++)
         {
             CardAction aA = attackActions[i];
@@ -128,6 +127,9 @@ public class ResolutionPhase : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
         yield return new WaitForSeconds(1f);
+
+        ClearActions();
+        tS.NextPhase();
     }
 }
 

@@ -132,6 +132,7 @@ public class TurnStructure : MonoBehaviour
         handScript.ClearHand();
         deckHandUI.EnableDeckUI();
         deckHandUI.EnableHandUI();
+        deckHandUI.DrawRevealedHandUI();
         deckHandUI.EnableAIHandUI();
 
         aiI.AIDrawCard();

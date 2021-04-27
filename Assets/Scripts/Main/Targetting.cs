@@ -53,7 +53,7 @@ public class Targetting : MonoBehaviour
 
         ResolutionUI.instance.HideActionButtons();
 
-        GameObject newObj = Instantiate(targettingObjects[sizeIndex]);
+        GameObject newObj = Instantiate(targettingObjects[sizeIndex], transform.position, Quaternion.Euler(-25f, 16f, 2.27f));
         selectedTargettingObject = newObj;
         selectedTargettingObject.SetActive(true);
 
@@ -121,7 +121,7 @@ public class Targetting : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                selectedTargettingObject.transform.Rotate(0, 60, 0);
+                selectedTargettingObject.transform.Rotate(0, -60, 0);
             }
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {

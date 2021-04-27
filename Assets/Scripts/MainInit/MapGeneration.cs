@@ -82,24 +82,24 @@ public class MapGeneration : MonoBehaviour
 
 
                 if (k % 2 == 0) // Here we're checking if this row is an odd number, and if it is, shifting its z position by -0.5
-                {
-                }
+                {}
                 else
                     rowHolder.position += new Vector3(0, 0, -0.5f);
             }
             planet.hextileList = hextileList;
             //Offset the entire player's grid based on the number of players
+            //and set the planet's location relative to the player
             mapHolder.transform.position = mapHolder.parent.position;
             if(i == 0)
             {
-                mapHolder.Rotate(-3F, -1.5f, -3.4F);
-                planet.transform.position = new Vector3(10, -20, -12);
+                //mapHolder.Rotate(-3F, -1.5f, -3.4F);
+                planet.transform.position = new Vector3(5.1f, -20, -0.8f);
             }
             if (i == 1)
             {
-                mapHolder.transform.position += new Vector3(-10, 0, 35);
-                mapHolder.Rotate(-8F, 4.2F, 0);
-                planet.transform.position += new Vector3(-7, 0, 10);
+                mapHolder.transform.position += new Vector3(-118.3f, -173.9f, 133);
+                mapHolder.Rotate(4.3F, -95.5F, -162);
+                planet.transform.position += new Vector3(0, 0, 0);
             }
         }
         //FogGen();
