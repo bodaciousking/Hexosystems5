@@ -142,7 +142,7 @@ public class AICities : MonoBehaviour
         GameObject newCPObj = AICityPlaceObjects[citySize];
         newCPObj.SetActive(true);
         newCPObj.transform.position = randomHex.transform.position;
-
+        newCPObj.transform.rotation = randomHex.transform.rotation;
     }
 
     public bool PlaceCity()
