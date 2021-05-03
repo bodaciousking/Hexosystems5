@@ -3066,7 +3066,7 @@ MonoBehaviour:
   endangeredTiles: []
   aiEnergy: 100
   priorities: {x: 0, y: 0, z: 0}
-  bias: {x: 10, y: 0, z: 0}
+  bias: {x: 0, y: 0, z: 0}
 --- !u!114 &963358344
 MonoBehaviour:
   m_ObjectHideFlags: 0

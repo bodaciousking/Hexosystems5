@@ -42,7 +42,6 @@ public class CameraMovement : MonoBehaviour
     {
         moving = true;
         int frameCount = 100;
-        Debug.Log("");
         Vector3 currentPos;
         currentPos = Camera.main.transform.position;
         if (designation.position != currentPos)

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ResolutionPhase : MonoBehaviour
 {
-
-
     public List<CardAction> attackActions = new List<CardAction>();
     public List<CardAction> defenceActions = new List<CardAction>();
     public List<CardAction> reconActions = new List<CardAction>();
@@ -17,6 +15,7 @@ public class ResolutionPhase : MonoBehaviour
     public CardAction AIStoredAction;
 
     public static ResolutionPhase instance;
+
 
     ResolutionUI rUI;
     TurnStructure tS;
@@ -145,6 +144,26 @@ public class CardAction
     {
         Debug.Log("Executing " + actionName + ".");
     }
+
+    public void RevealTile(Hextile hex)
+    {
+        AIInfo aII;
+        aII = AIInfo.instance;
+        if (hex.isCity)
+        {
+            if (hex.owningPlayerID == 0) // Player tile revealed
+            {
+                if (!aII.enemyTiles.Contains(hex))
+                    aII.enemyTiles.Add(hex);
+            }
+            else if (hex.owningPlayerID == 1) //AI tile revealed
+            {
+                if (!aII.endangeredTiles.Contains(hex))
+                    aII.endangeredTiles.Add(hex);
+            }
+            hex.visible = true;
+        }
+    }
 }
 
 public class AttackAction : CardAction
@@ -265,19 +284,12 @@ public class BraveExplorersAction : ReconAction
 
         foreach (Hextile item in targets)
         {
-            GameObject hextileObject = item.gameObject;
-            Transform gfx = hextileObject.transform.Find("Main");
-            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
-
             item.visible = true;
             if (playedByAI)
             {
                 if (item.isCity)
                 {
-                    Debug.Log("Added a city tile to known player tiles.");
-                    GameObject cM = GameObject.Find("ClientMaster");
-                    AIInfo aiI = cM.GetComponent<AIInfo>();
-                    aiI.enemyTiles.Add(item);
+                    RevealTile(item);
                 }
             }
         }
@@ -301,9 +313,7 @@ public class ScoutingDroneAction : ReconAction
 
         GameObject hextileObject = target.gameObject;
         Hextile hex = hextileObject.GetComponent<Hextile>();
-        hex.visible = true;
-        Transform gfx = hextileObject.transform.Find("Main");
-        Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+        RevealTile(hex);
 
         target.visible = true;
         if (!playedByAI)
@@ -316,11 +326,13 @@ public class ScoutingDroneAction : ReconAction
                 {
                     hextileObject = hextileList[x + 1].gameObject;
                     hex = hextileObject.GetComponent<Hextile>();
-                    hex.visible = true;
+                    RevealTile(hex);
 
                     hextileObject = hextileList[x - 1].gameObject;
                     hex = hextileObject.GetComponent<Hextile>();
                     hex.visible = true;
+                    RevealTile(hex);
+
                 }
             }
         }
@@ -332,9 +344,8 @@ public class ScoutingDroneAction : ReconAction
             {
                 if (target.tileLocation == hextileList[x].GetComponent<Hextile>().tileLocation)
                 {
-                    hextileList[x + 1].visible = true;
-                    hextileList[x - 1].visible = true;
-
+                    RevealTile(hextileList[x + 1]);
+                    RevealTile(hextileList[x - 1]); 
                 }
             }
         }
@@ -371,19 +382,12 @@ public class ShapeshifterInfiltratorAction : ReconAction
                     {
                         cityList.Add(hextileList[x]);
                     }
-                    
-
                 }
             }
-            int rand = Random.Range(0, cityList.Count);
+            int rand = Random.Range(0, cityList.Count-1);
 
-            GameObject hextileObject = cityList[rand].gameObject;
-            Transform gfx = hextileObject.transform.Find("Main");
-            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
-
-            cityList[rand].visible = true;
-            
-           
+            Debug.Log(rand);
+            RevealTile(cityList[rand]);
         }
         else
         {
@@ -394,7 +398,6 @@ public class ShapeshifterInfiltratorAction : ReconAction
             {
                 if (hextileList[x].GetComponent<Hextile>().isCity)
                 {
-
                     if (hextileList[x].GetComponent<Hextile>().visible == false)
                     {
                         cityList.Add(hextileList[x]);
@@ -402,13 +405,9 @@ public class ShapeshifterInfiltratorAction : ReconAction
 
                 }
             }
-            int rand = Random.Range(0, cityList.Count);
-
-            GameObject hextileObject = cityList[rand].gameObject;
-            Transform gfx = hextileObject.transform.Find("Main");
-            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
-
-            cityList[rand].visible = true;
+            int rand = Random.Range(0, cityList.Count-1);
+            Debug.Log(rand);
+            RevealTile(cityList[rand]);
         }
 
     }
