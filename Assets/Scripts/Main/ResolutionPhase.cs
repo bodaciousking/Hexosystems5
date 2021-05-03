@@ -149,6 +149,7 @@ public class CardAction
     {
         AIInfo aII;
         aII = AIInfo.instance;
+        hex.visible = true;
         if (hex.isCity)
         {
             if (hex.owningPlayerID == 0) // Player tile revealed
@@ -161,7 +162,6 @@ public class CardAction
                 if (!aII.endangeredTiles.Contains(hex))
                     aII.endangeredTiles.Add(hex);
             }
-            hex.visible = true;
         }
     }
 }
@@ -284,14 +284,7 @@ public class BraveExplorersAction : ReconAction
 
         foreach (Hextile item in targets)
         {
-            item.visible = true;
-            if (playedByAI)
-            {
-                if (item.isCity)
-                {
-                    RevealTile(item);
-                }
-            }
+            RevealTile(item);
         }
     }
 }
