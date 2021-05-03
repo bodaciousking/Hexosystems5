@@ -142,13 +142,13 @@ public class AICities : MonoBehaviour
         GameObject newCPObj = AICityPlaceObjects[citySize];
         newCPObj.SetActive(true);
         newCPObj.transform.position = randomHex.transform.position;
-        newCPObj.transform.rotation = randomHex.transform.rotation;
+        newCPObj.transform.rotation = Quaternion.Euler(-5f, 83f, 162f);
     }
 
     public bool PlaceCity()
     {
         bool success = false;
-        if (possibleCity.Count < intendedSize)
+        if (possibleCity.Count != intendedSize)
         {
             possibleBlockedArea.Clear();
             possibleCity.Clear();

@@ -12,6 +12,14 @@ public class CityHandler : MonoBehaviour
     public static CityHandler instance;
     public TextMeshProUGUI energyText;
 
+    public void RevealAll()
+    {
+        HexoPlanet planet = GameObject.Find("Player 1 Map").GetComponentInChildren<HexoPlanet>();
+        for (int i = 0; i < planet.hextileList.Count; i++)
+        {
+            planet.hextileList[i].visible = true;
+        }
+    }
     public int DetermineEnergyGeneratedByCities()
     {
         int allCityEnergy = 0;

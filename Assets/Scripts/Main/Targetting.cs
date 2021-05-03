@@ -157,6 +157,7 @@ public class Targetting : MonoBehaviour
         }
         else if(currentCondition == TargetCondition.isEnemyTile)
         {
+            Debug.Log(singleTarget);
             if (singleTarget.owningPlayerID != 0)
             {
                 validTarget = true;

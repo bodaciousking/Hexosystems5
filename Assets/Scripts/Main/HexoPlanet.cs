@@ -11,4 +11,5 @@ public class HexoPlanet : MonoBehaviour
     {
         transform.Rotate(new Vector3(0, 0.1f, 0));
     }
+
 }
