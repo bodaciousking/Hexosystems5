@@ -139,10 +139,10 @@ public class TurnStructure : MonoBehaviour
         aiI.AIDrawCard();
         aiI.AIDrawCard();
         aiI.AIDrawCard();
-        deckHandUI.EnableAIHandUI();
     }
     public void BeginPhaseStrategy()
     {
+        deckHandUI.EnableAIHandUI();
         deckHandUI.DrawRevealedHandUI();
         msgD.DisplayMessage("Strategy Phase", 1f);
         deckHandUI.DisableDeckUI();
