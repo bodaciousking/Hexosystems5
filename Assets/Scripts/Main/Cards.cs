@@ -496,7 +496,6 @@ public class BraveExplorers : ReconCard
         targetType = TargetType.random;
         numTargets = 4;
         visionDuration = 1;
-
     }
 
     public override void PlayCard(bool playedByAI)

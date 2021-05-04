@@ -62,23 +62,22 @@ public class CityPlacement : MonoBehaviour
                     if (selectedCityObject)
                         selectedCityObject.transform.position = hit.transform.position;
                 }
+                if (selectedCityObject)
+                {
+                    if (Input.GetKeyDown(KeyCode.R))
+                    {
+                        selectedCityObject.transform.Rotate(0, 60, 0);
+                    }
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
+                        CreateCity();
+                    }
+                }
             }
             else if (selectedCityObject)
             {
                 selectedCityObject.SetActive(false);
                 ResetColors();
-            }
-            if (selectedCityObject)
-            {
-                if (Input.GetKeyDown(KeyCode.R))
-                {
-                    selectedCityObject.transform.Rotate(0, 60, 0);
-                }
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                {
-                    if (!EventSystem.current.IsPointerOverGameObject())
-                        CreateCity();
-                }
             }
         }
         else

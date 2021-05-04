@@ -10,6 +10,7 @@ public class DeckHandUI : MonoBehaviour
     public Transform handHolder;
     public Transform enemyHandHolder;
     public GameObject handCardButton;
+    public GameObject opponentHandText;
     Decks decksScript;
     Hands playerHand;
     Cards cards;
@@ -46,11 +47,45 @@ public class DeckHandUI : MonoBehaviour
     
     public void EnableAIHandUI()
     {
-        handHolder.gameObject.SetActive(true);
+        opponentHandText.SetActive(true);
+        AIInfo aII = AIInfo.instance;
+        GridLayoutGroup gLG = enemyHandHolder.GetComponent<GridLayoutGroup>();
+        gLG.enabled = true;
+        foreach (Transform item in enemyHandHolder)
+        {
+            Destroy(item.gameObject);
+        }
+
+        for (int i = 0; i < aII.aiHand.Count; i++)
+        {
+            Card cardToDraw = aII.aiHand[i];
+            GameObject newCardButton = Instantiate(handCardButton);
+            newCardButton.transform.SetParent(enemyHandHolder);
+            newCardButton.transform.localScale = Vector3.one;
+            Image cardImage = newCardButton.GetComponent<Image>();
+            TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
+            for (int j = 0; j < text.Length; j++)
+            {
+                text[j].gameObject.SetActive(false);
+            }
+            switch (cardToDraw.cardType)
+            {
+                case 0:
+                    cardImage.sprite = aBack;
+                    break;
+                case 1:
+                    cardImage.sprite = dBack;
+                    break;
+                case 2:
+                    cardImage.sprite = Rback;
+                    break;
+            }
+        }
     }
     public void DisableAIHandUI()
     {
-        handHolder.gameObject.SetActive(false);
+        enemyHandHolder.gameObject.SetActive(false);
+        opponentHandText.SetActive(false);
     }
 
     public void DrawHiddenHandUI()

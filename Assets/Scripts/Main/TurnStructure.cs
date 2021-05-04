@@ -133,13 +133,13 @@ public class TurnStructure : MonoBehaviour
         deckHandUI.EnableDeckUI();
         deckHandUI.EnableHandUI();
         deckHandUI.DrawRevealedHandUI();
-        deckHandUI.EnableAIHandUI();
 
         aiI.AIDrawCard();
         aiI.AIDrawCard();
         aiI.AIDrawCard();
         aiI.AIDrawCard();
         aiI.AIDrawCard();
+        deckHandUI.EnableAIHandUI();
     }
     public void BeginPhaseStrategy()
     {
@@ -151,6 +151,7 @@ public class TurnStructure : MonoBehaviour
     public void BeginPhaseResolution()
     {
         deckHandUI.DisableHandUI();
+        deckHandUI.DisableAIHandUI();
         Hands.instance.ClearHand();
         nextPhaseButton.SetActive(false);
         energyUI.SetActive(false);
@@ -161,6 +162,8 @@ public class TurnStructure : MonoBehaviour
     }
     public void BeginPhaseDiscard()
     {
+        deckHandUI.DisableHandUI();
+        deckHandUI.DisableAIHandUI();
         //add shield discard
         //msgD.DisplayMessage("Discard Phase", 1f);
         SetNextTurnTimer(2f);
