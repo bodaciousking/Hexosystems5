@@ -40,6 +40,7 @@ public class DeckHandUI : MonoBehaviour
     }
     public void DisableHandUI()
     {
+        Debug.Log("Hiding hand UI.");
         handHolder.gameObject.SetActive(false);
     }
     

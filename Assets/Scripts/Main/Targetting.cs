@@ -111,23 +111,24 @@ public class Targetting : MonoBehaviour
 
             if (selectedTargettingObject)
                 selectedTargettingObject.transform.position = hit.transform.position;
+
+            if (selectedTargettingObject)
+            {
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    selectedTargettingObject.transform.Rotate(0, -60, 0);
+                }
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    if (!EventSystem.current.IsPointerOverGameObject())
+                        ConfirmTarget();
+                }
+            }
         }
         else if (selectedTargettingObject)
         {
             selectedTargettingObject.SetActive(false);
             ResetColors();
-        }
-        if (selectedTargettingObject)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                selectedTargettingObject.transform.Rotate(0, -60, 0);
-            }
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                if (!EventSystem.current.IsPointerOverGameObject())
-                    ConfirmTarget();
-            }
         }
     }
 
@@ -157,6 +158,7 @@ public class Targetting : MonoBehaviour
         }
         else if(currentCondition == TargetCondition.isEnemyTile)
         {
+            Debug.Log(singleTarget);
             if (singleTarget.owningPlayerID != 0)
             {
                 validTarget = true;

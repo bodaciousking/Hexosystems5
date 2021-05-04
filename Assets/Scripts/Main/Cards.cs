@@ -37,6 +37,17 @@ using UnityEngine.UI;
     public int targetSize;
     public int numTargets;
 
+    public bool EnoughEnergy()
+    {
+        CityHandler cH = CityHandler.instance;
+        if (cH.generatedEnergy < energyCost)
+        {
+            Debug.Log("Not enough Energy.");
+            return false;
+        }
+        else return true;
+    }
+
     public virtual void PlayCard(bool playedByAI)
     {
         aIPlay = playedByAI;
@@ -45,21 +56,16 @@ using UnityEngine.UI;
         ResolutionUI rUI = ResolutionUI.instance;
         if (!playedByAI)
         {
-            if (cH.generatedEnergy < energyCost)
-            {
-                Debug.Log("Not enough Energy.");
-                return;
-            }
-            else if (cH.generatedEnergy >= energyCost)
+            if (cH.generatedEnergy >= energyCost)
             {
                 Debug.Log("Playing " + cardName + "...");
                 Hands hand = Hands.instance;
                 hand.hand.Remove(this);
                 dHUI.DrawRevealedHandUI();
-                dHUI.DisableHandUI();
 
                 if (targetType == TargetType.selectTarget)
                 {
+                    dHUI.DisableHandUI();
                     Targetting targetting = Targetting.instance;
                     switch (cardType)
                     {
@@ -187,13 +193,26 @@ using UnityEngine.UI;
         ssa.representedCard = this;
         myAction = ssa;
 
-        base.PlayCard(playedByAI);
-
         DeckHandUI dhUI = DeckHandUI.instance;
+        ResolutionPhase rP = ResolutionPhase.instance;
         dhUI.EnableHandUI();
 
-        ResolutionPhase rP = ResolutionPhase.instance;
-        rP.attackActions.Add(ssa);
+        if (!playedByAI)
+        {
+            if (EnoughEnergy())
+            { 
+                base.PlayCard(playedByAI);
+                rP.attackActions.Add(ssa);
+            }
+        }
+
+        else
+        { 
+            base.PlayCard(playedByAI);
+            rP.attackActions.Add(ssa);
+        }
+    
+
     }
 }
 
@@ -225,19 +244,22 @@ using UnityEngine.UI;
         myAction = lsa;
 
         ResolutionPhase rP = ResolutionPhase.instance;
-        base.PlayCard(playedByAI);
         Targetting targetting = Targetting.instance;
 
         if (!playedByAI)
-        {
-            targetting.SelectObjectAoE(1);
-            targetting.intendedNumTargets = 3;
-            targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+        {if (EnoughEnergy())
+            {
+                base.PlayCard(playedByAI);
+                targetting.SelectObjectAoE(1);
+                targetting.intendedNumTargets = 3;
+                targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
 
-            rP.storedAttackAction = lsa;
+                rP.storedAttackAction = lsa;
+            }
         }
         else
         {
+            base.PlayCard(playedByAI);
             rP.AIStoredAction = lsa;
             if (AIInfo.instance.enemyTiles.Count > 0)
             {
@@ -282,19 +304,23 @@ using UnityEngine.UI;
         gca.representedCard = this;
         myAction = gca;
 
-        base.PlayCard(playedByAI);
 
         if (!playedByAI)
         {
-            Targetting targetting = Targetting.instance;
-            targetting.SelectObjectAoE(0);
-            targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
+            if (EnoughEnergy())
+            {
+                base.PlayCard(playedByAI);
+                Targetting targetting = Targetting.instance;
+                targetting.SelectObjectAoE(0);
+                targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
 
-            ResolutionPhase rP = ResolutionPhase.instance;
-            rP.storedAttackAction = gca;
+                ResolutionPhase rP = ResolutionPhase.instance;
+                rP.storedAttackAction = gca;
+            }
         } 
         else
         {
+            base.PlayCard(playedByAI);
             Debug.Log("Ai playing Gauss Cannon."); 
             if (AIInfo.instance.enemyTiles.Count > 0)
                 gca.target = AIInfo.instance.enemyTiles[0];
@@ -325,8 +351,6 @@ public class EmergencyShield : DefenceCard
     }
     public override void PlayCard(bool playedByAI)
     {
-        base.PlayCard(playedByAI);
-
         EmergencyShieldAction esa = new EmergencyShieldAction();
         esa.actionName = "Emergency Shield";
         esa.actionType = 1;
@@ -337,17 +361,22 @@ public class EmergencyShield : DefenceCard
 
         if (!playedByAI)
         {
-            Targetting targetting = Targetting.instance;
-            targetting.SelectObjectAoE(0);
-            targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
+            if (EnoughEnergy())
+            {
+                base.PlayCard(playedByAI);
+                Targetting targetting = Targetting.instance;
+                targetting.SelectObjectAoE(0);
+                targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
 
 
-            ResolutionPhase rP = ResolutionPhase.instance;
-            rP.storedDefenceAction = esa;
-        }
-
+                ResolutionPhase rP = ResolutionPhase.instance;
+                rP.storedDefenceAction = esa;
+            }
+        } 
         else
         {
+            base.PlayCard(playedByAI);
+
             Debug.Log("Ai playing Defensive Shield.");
             if (AIInfo.instance.endangeredTiles.Count > 0)
                 esa.target = AIInfo.instance.endangeredTiles[0];
@@ -389,15 +418,21 @@ public class EmergencyShield : DefenceCard
 
         if (!playedByAI)
         {
-            Targetting targetting = Targetting.instance;
-            targetting.SelectObjectAoE(0);
-            targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
+            if (EnoughEnergy())
+            {
+                Targetting targetting = Targetting.instance;
+                targetting.SelectObjectAoE(0);
+                targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
 
-            ResolutionPhase rP = ResolutionPhase.instance;
-            rP.storedDefenceAction = installedShieldAction;
+                ResolutionPhase rP = ResolutionPhase.instance;
+                rP.storedDefenceAction = installedShieldAction;
+
+                base.PlayCard(playedByAI);
+            }
         }
+        else
+            base.PlayCard(playedByAI);
 
-        base.PlayCard(playedByAI);
     
     }
 }
@@ -428,24 +463,28 @@ public class EmergencyShield : DefenceCard
         metropolitanDefenseSystemAction.representedCard = this;
         myAction = metropolitanDefenseSystemAction;
 
-        base.PlayCard(playedByAI);
-
         if (!playedByAI)
         {
-            Targetting targetting = Targetting.instance;
-            targetting.SelectObjectAoE(0);
-            targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
+            if (EnoughEnergy())
+            {
+                base.PlayCard(playedByAI);
+                Targetting targetting = Targetting.instance;
+                targetting.SelectObjectAoE(0);
+                targetting.currentCondition = Targetting.TargetCondition.isFriendlyCity;
 
-
-
-            ResolutionPhase rP = ResolutionPhase.instance;
-            rP.storedDefenceAction = metropolitanDefenseSystemAction;
+                ResolutionPhase rP = ResolutionPhase.instance;
+                rP.storedDefenceAction = metropolitanDefenseSystemAction;
+            }
         }
+        else
+            base.PlayCard(playedByAI);
     }
 }
 
-    /////// RECON CARD LIST
-    public class BraveExplorers : ReconCard
+/////// RECON CARD LIST
+public class BraveExplorers : ReconCard
+{
+    public BraveExplorers()
     {
         public BraveExplorers()
         {
@@ -460,9 +499,20 @@ public class EmergencyShield : DefenceCard
             numTargets = 4;
             visionDuration = 1;
         }
+        cardID = 201;
+        cardType = 2;
+        imageReference = 6;
+        cardName = "Brave Explorers";
+        cardDescr = "Scout 3 random hexes. Vision lasts 1 turn.";
+        energyCost = 2;
+        energyCostText = "2";
+        targetType = TargetType.random;
+        numTargets = 4;
+        visionDuration = 1;
+    }
 
-        public override void PlayCard(bool playedByAI)
-        {
+    public override void PlayCard(bool playedByAI)
+    {
 
         BraveExplorersAction bea = new BraveExplorersAction(playedByAI);
         bea.targets = SelectRandomHextile(playedByAI);
@@ -471,17 +521,27 @@ public class EmergencyShield : DefenceCard
         bea.representedCard = this;
         myAction = bea;
 
+        DeckHandUI dhUI = DeckHandUI.instance;
+        dhUI.EnableHandUI();
+        ResolutionPhase rP = ResolutionPhase.instance;
+
+        if (!playedByAI)
+        {
+            if (EnoughEnergy())
+            {
+                base.PlayCard(playedByAI);
+                rP.reconActions.Add(bea);
+            }
+        }
+        else
+        {
             base.PlayCard(playedByAI);
-            DeckHandUI dhUI = DeckHandUI.instance;
-            dhUI.EnableHandUI();
-
-        Debug.Log("A");
-
-            ResolutionPhase rP = ResolutionPhase.instance;
             rP.reconActions.Add(bea);
         }
 
     }
+
+}
 
 public class ScoutingDrone : ReconCard
 {
@@ -507,23 +567,28 @@ public class ScoutingDrone : ReconCard
         sda.representedCard = this;
         myAction = sda;
 
-        base.PlayCard(playedByAI);
 
-
-        for (int x = 0; x <= 4; x++)
+        if (!playedByAI)
         {
-            if (!playedByAI)
+            if (EnoughEnergy())
             {
+                base.PlayCard(playedByAI);
                 Targetting targetting = Targetting.instance;
-                targetting.SelectObjectAoE(0);
-                targetting.recon = true;
-                targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
-
                 ResolutionPhase rP = ResolutionPhase.instance;
-                rP.storedReconAction = sda;
+                for (int x = 0; x <= 4; x++)
+                {
+                    targetting.SelectObjectAoE(0);
+                    targetting.recon = true;
+                    targetting.currentCondition = Targetting.TargetCondition.isEnemyTile;
 
+                    rP.storedReconAction = sda;
+                }
             }
-            else
+        }
+        else
+        {
+            base.PlayCard(playedByAI);
+            for (int x = 0; x <= 4; x++)
             {
                 Debug.Log("Ai playing Scouting Drone.");
                 sda.target = SelectTarget();
@@ -537,8 +602,8 @@ public class ScoutingDrone : ReconCard
 
 }
 
-    public class ShapeshifterInfiltrator : ReconCard
-    {
+public class ShapeshifterInfiltrator : ReconCard
+{
     public ShapeshifterInfiltrator()
     {
         cardID = 201;
@@ -555,7 +620,6 @@ public class ScoutingDrone : ReconCard
 
     public override void PlayCard(bool playedByAI)
     {
-
         ShapeshifterInfiltratorAction sia = new ShapeshifterInfiltratorAction(playedByAI);
         sia.targets = SelectRandomHextile(playedByAI);
         sia.actionName = "Shapeshifter Infiltrator";
@@ -563,14 +627,23 @@ public class ScoutingDrone : ReconCard
         sia.representedCard = this;
         myAction = sia;
 
-        base.PlayCard(playedByAI);
         DeckHandUI dhUI = DeckHandUI.instance;
-        dhUI.EnableHandUI();
-
 
         ResolutionPhase rP = ResolutionPhase.instance;
-        rP.reconActions.Add(sia);
-    }
+        dhUI.EnableHandUI();
 
-
+        if (!playedByAI)
+        {
+            if (EnoughEnergy())
+            {
+                base.PlayCard(playedByAI);
+                rP.reconActions.Add(sia);
+            }
+        }
+        else
+        {
+            base.PlayCard(playedByAI);
+            rP.reconActions.Add(sia);
+        }
+    } 
 }
