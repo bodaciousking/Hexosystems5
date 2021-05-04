@@ -486,29 +486,17 @@ public class BraveExplorers : ReconCard
 {
     public BraveExplorers()
     {
-        public BraveExplorers()
-        {
-            cardID = 201;
-            cardType = 2;
-            imageReference = 6;
-            cardName = "Brave Explorers";
-            cardDescr = "Get vision of 4 random tiles that haven't been reconned yet.";
-            energyCost = 1;
-            energyCostText = "1";
-            targetType = TargetType.random;
-            numTargets = 4;
-            visionDuration = 1;
-        }
         cardID = 201;
         cardType = 2;
         imageReference = 6;
         cardName = "Brave Explorers";
-        cardDescr = "Scout 3 random hexes. Vision lasts 1 turn.";
-        energyCost = 2;
-        energyCostText = "2";
+        cardDescr = "Get vision of 4 random tiles that haven't been reconned yet.";
+        energyCost = 1;
+        energyCostText = "1";
         targetType = TargetType.random;
         numTargets = 4;
         visionDuration = 1;
+
     }
 
     public override void PlayCard(bool playedByAI)
