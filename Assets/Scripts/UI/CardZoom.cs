@@ -15,11 +15,12 @@ public class CardZoom : MonoBehaviour
     public void onPointerEnterFunction()
     {
         if (revealed)
-        {
+        {  
+           
             mySize = gameObject.transform.localScale;
-            gameObject.transform.localScale = new Vector3(3, 3, 3);
+            gameObject.transform.localScale = new Vector3(2, 2, 2);
             gameObject.transform.localPosition += new Vector3(0, offset, 0);
-            gameObject.transform.SetAsFirstSibling();
+            gameObject.transform.SetAsLastSibling();
             GridLayoutGroup gLG = transform.parent.GetComponent<GridLayoutGroup>();
             if (gLG)
                 gLG.enabled = false;
@@ -29,6 +30,7 @@ public class CardZoom : MonoBehaviour
     {
         if (revealed)
         {
+           
             gameObject.transform.localScale = mySize;
             gameObject.transform.localPosition -= new Vector3(0, offset, 0);
         }

@@ -44,9 +44,6 @@ public class Decks : MonoBehaviour
         allAttackCards.Add(new GaussCannon());
         allAttackCards.Add(new LaserStrike());
         allAttackCards.Add(new LaserStrike());
-        allAttackCards.Add(new LaserStrike());
-        allAttackCards.Add(new LaserStrike());
-        allAttackCards.Add(new LaserStrike());
         allAttackCards.Add(new ScatterShot());
         allAttackCards.Add(new ScatterShot());
         allAttackCards.Add(new ScatterShot());

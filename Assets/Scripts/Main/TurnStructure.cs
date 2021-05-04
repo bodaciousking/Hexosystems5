@@ -161,6 +161,7 @@ public class TurnStructure : MonoBehaviour
     }
     public void BeginPhaseDiscard()
     {
+        //add shield discard
         //msgD.DisplayMessage("Discard Phase", 1f);
         SetNextTurnTimer(2f);
         nextPhaseButton.SetActive(false);

@@ -17,16 +17,16 @@ public class Hextile : MonoBehaviour
     public City containingCity;
     public int owningPlayerID;
     public int permanentShields;
-    public int decayShields;
     public int health;
     public int myRowLength;
+    public int decayShields;
+    public bool Emer = false; 
 
     public bool visible = false; 
 
     private void Start()
     {
-        //floor.GetComponent<Renderer>().material.color = Color.gray;
-
+        //floor.GetComponent<Renderer>().material.color = Color.gray; 
         health = 2; 
         myShield.transform.localScale = new Vector3(myShield.transform.localScale.x, myCity.transform.localScale.y + myCity.transform.localScale.y/8f, myShield.transform.localScale.z);
     }
@@ -68,9 +68,11 @@ public class Hextile : MonoBehaviour
         if (shielded)
         {
             myShield.SetActive(true);
+            permanentShields = 2;
         }
         else
         {
+            permanentShields = 0;
             myShield.SetActive(false);
         }
 
@@ -87,11 +89,15 @@ public class Hextile : MonoBehaviour
                 permanentShields -= dmg;
             }
             else
+            {
                 health = health - dmg;
+                myShield.SetActive(false);
+            }
 
             if (health <= 0) 
             { 
-                Explode(); 
+                Explode();
+                health = 0;
             }
         }
         myFire.SetActive(true);

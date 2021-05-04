@@ -170,9 +170,9 @@ using UnityEngine.UI;
         cardType = 0;
         imageReference = 0;
         cardName = "Scatter Shot";
-        cardDescr = "Hit 3 random hexes and apply 1 damage.";
-        energyCostText = "2";
-        energyCost = 2;
+        cardDescr = "Hit 4 random hexes and apply 1 damage.";
+        energyCostText = "1";
+        energyCost = 1;
         targetType = TargetType.random;
         numTargets = 4;
         damageDealt = 1;
@@ -205,9 +205,9 @@ using UnityEngine.UI;
         cardType = 0;
         imageReference = 1;
         cardName = "Laser Strike";
-        cardDescr = "Target 3 tiles in a line and apply 1 damage to each one of them. Shield Piercing(Keyword: The attack ignores shields)";
-        energyCostText = "4";
-        energyCost = 4;
+        cardDescr = "Target 3 tiles in a line and apply 1 damage to each one of them.";
+        energyCostText = "5";
+        energyCost = 5;
         targetType = TargetType.selectTarget;
         numTargets = 3;
         damageDealt = 1;
@@ -261,8 +261,8 @@ using UnityEngine.UI;
         public GaussCannon()
         {
             cardID = 002;
-        imageReference = 2;
-        cardType = 0;
+            imageReference = 2;
+            cardType = 0;
             cardName = "Gauss Cannon";
             cardDescr = "Target 1 tile and apply 1 damage.";
             energyCostText = "3";
@@ -315,7 +315,7 @@ public class EmergencyShield : DefenceCard
         cardType = 1;
         imageReference = 3;
         cardName = "Emergency Shield";
-        cardDescr = "Apply 1 Shield point to a target hex. Shield lasts for one turn or until destroyed.";
+        cardDescr = "Apply 1 Shield point to a target tile. Shield lasts for one turn";
         energyCost = 1;
         energyCostText = "1";
         targetType = TargetType.selectTarget;
@@ -415,8 +415,8 @@ public class EmergencyShield : DefenceCard
             energyCostText = "5";
             targetType = TargetType.selectTarget;
             numTargets = 1;
-            shieldType = 1;
-            shieldsRestored = 2;
+            shieldType = 1; // 2 
+            shieldsRestored = 1;
         }
         public override void PlayCard(bool playedByAI)
     {
@@ -451,11 +451,11 @@ public class EmergencyShield : DefenceCard
         {
             cardID = 201;
             cardType = 2;
-        imageReference = 6;
-        cardName = "Brave Explorers";
-            cardDescr = "Scout 3 random hexes. Vision lasts 1 turn.";
-            energyCost = 2;
-            energyCostText = "2";
+            imageReference = 6;
+            cardName = "Brave Explorers";
+            cardDescr = "Get vision of 4 random tiles that haven't been reconned yet.";
+            energyCost = 1;
+            energyCostText = "1";
             targetType = TargetType.random;
             numTargets = 4;
             visionDuration = 1;
@@ -491,7 +491,7 @@ public class ScoutingDrone : ReconCard
         cardType = 2;
         imageReference = 7;
         cardName = "Scouting Drone";
-        cardDescr = "Recon one tile and 2 additional tiles adjacent to it.";
+        cardDescr = "Recon 3 tiles in a triangle shape";
         energyCost = 3;
         energyCostText = "3";
         targetType = TargetType.selectTarget;
@@ -546,8 +546,8 @@ public class ScoutingDrone : ReconCard
         imageReference = 8;
         cardName = "Shapeshifter Infiltrator";
         cardDescr = "Get vision of a random enemy city tile that has not been reconned yet";
-        energyCost = 3;
-        energyCostText = "3";
+        energyCost = 5;
+        energyCostText = "5";
         targetType = TargetType.random;
         numTargets = 1;
         visionDuration = 1;

@@ -44,10 +44,12 @@ public class CityInfoUI : MonoBehaviour
         if (CityShield == false)
         {
             CityHpText[1].text = "City Shield: Inactive";
+            CityHpText[3].text = "Shield HP: 0"; 
         }
         else
         {
             CityHpText[1].text = "City Shield: Active";
+            CityHpText[3].text = "Shield HP: " + Hex.GetComponent<Hextile>().permanentShields;
         }
 
         if (CityDestroyed == false)
@@ -61,7 +63,19 @@ public class CityInfoUI : MonoBehaviour
 
         Vector3 mousePos = Input.mousePosition;
         infoPanel.transform.position = mousePos;
-        infoPanel.transform.position += new Vector3(150, 100, 0);
+
+        if(mousePos.y >= 800.0f)
+        {
+            infoPanel.transform.position += new Vector3(150, -80, 0);
+
+        }
+        else if(mousePos.y <= 100.0f) 
+        {
+          
+            infoPanel.transform.position += new Vector3(150, 100, 0);
+        }
+
+        
        
     }
 
