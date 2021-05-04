@@ -47,6 +47,7 @@ public class DeckHandUI : MonoBehaviour
     
     public void EnableAIHandUI()
     {
+        enemyHandHolder.gameObject.SetActive(true);
         opponentHandText.SetActive(true);
         AIInfo aII = AIInfo.instance;
         GridLayoutGroup gLG = enemyHandHolder.GetComponent<GridLayoutGroup>();
