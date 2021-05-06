@@ -10,6 +10,7 @@ using UnityEngine.UI;
     public static Cards instance;
     public List<Sprite> cardImages = new List<Sprite>();
 
+
     private void Awake()
     {
         if(instance != null)
@@ -18,7 +19,9 @@ using UnityEngine.UI;
             return;
         }
         instance = this;
+
     }
+
 }
 
     public class Card
@@ -37,6 +40,7 @@ using UnityEngine.UI;
     public int targetSize;
     public int numTargets;
 
+
     public bool EnoughEnergy()
     {
         CityHandler cH = CityHandler.instance;
@@ -46,6 +50,12 @@ using UnityEngine.UI;
             return false;
         }
         else return true;
+    }
+
+
+    public int returnType()
+    {
+        return cardType;
     }
 
     public virtual void PlayCard(bool playedByAI)
@@ -348,6 +358,7 @@ public class EmergencyShield : DefenceCard
         numTargets = 1;
         shieldType = 0;
         shieldsRestored = 2;
+
     }
     public override void PlayCard(bool playedByAI)
     {

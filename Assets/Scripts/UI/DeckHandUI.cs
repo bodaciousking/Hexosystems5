@@ -16,6 +16,7 @@ public class DeckHandUI : MonoBehaviour
     Cards cards;
     public static DeckHandUI instance;
     public Sprite aBack, dBack, Rback;
+    public Sprite aFront, dFront, rFront;
 
     private void Awake()
     {
@@ -146,6 +147,8 @@ public class DeckHandUI : MonoBehaviour
 
     public void DrawRevealedHandUI()
     {
+
+
         GridLayoutGroup gLG = handHolder.GetComponent<GridLayoutGroup>();
         gLG.enabled = true;
 
@@ -157,6 +160,12 @@ public class DeckHandUI : MonoBehaviour
         for (int i = 0; i < playerHand.hand.Count; i++)
         {
             Card cardToDraw = playerHand.hand[i];
+
+            Debug.Log(cardToDraw.returnType());
+
+          
+
+
             if (CityHandler.instance.generatedEnergy > cardToDraw.energyCost)
             {
                 GameObject newCardButton = Instantiate(handCardButton);
@@ -165,8 +174,23 @@ public class DeckHandUI : MonoBehaviour
                 CardZoom cZ = newCardButton.GetComponent<CardZoom>();
                 cZ.revealed = true;
                 Image cardImage = newCardButton.GetComponent<Image>();
-                //cardImage.sprite = cards.cardImages[cardToDraw.imageReference]; // For drawing Card Fronts!!
-                TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
+                
+
+                if (cardToDraw.returnType() == 0)
+                {
+                    cardImage.GetComponent<Image>().sprite = aFront;
+                }
+                else if(cardToDraw.returnType() == 1)
+                {
+                    cardImage.GetComponent<Image>().sprite = dFront;
+                }
+                else if (cardToDraw.returnType() == 2)
+                {
+                    cardImage.GetComponent<Image>().sprite = rFront;
+                }
+
+                    //cardImage.sprite = cards.cardImages[cardToDraw.imageReference]; // For drawing Card Fronts!!
+                    TextMeshProUGUI[] text = newCardButton.GetComponentsInChildren<TextMeshProUGUI>();
                 text[0].text = cardToDraw.cardName;
                 text[0].color = Color.white;
                 text[1].text = cardToDraw.cardDescr;
