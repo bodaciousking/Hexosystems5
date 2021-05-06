@@ -284,6 +284,15 @@ public class BraveExplorersAction : ReconAction
 
         foreach (Hextile item in targets)
         {
+
+            Hextile hextileObject = item;
+            Transform gfx = hextileObject.transform.Find("Main");
+            FloorGfx fgfx = gfx.GetComponent<FloorGfx>();
+            fgfx.myColor = Color.red;
+            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+            if (hextileObject.visible || hextileObject.owningPlayerID == 0)
+                hextileRenderer.material.color = Color.blue;
+
             RevealTile(item);
         }
     }
@@ -308,6 +317,10 @@ public class ScoutingDroneAction : ReconAction
         Hextile hex = hextileObject.GetComponent<Hextile>();
         RevealTile(hex);
 
+        
+       
+
+
         target.visible = true;
         if (!playedByAI)
         {
@@ -331,6 +344,13 @@ public class ScoutingDroneAction : ReconAction
         }
         else
         {
+            Transform gfx = hextileObject.transform.Find("Main");
+            FloorGfx fgfx = gfx.GetComponent<FloorGfx>();
+            fgfx.myColor = Color.red;
+            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+            if (hex.visible || hex.owningPlayerID == 0)
+                hextileRenderer.material.color = Color.blue;
+
             List<Hextile> hextileList = map1.transform.GetChild(0).GetComponent<HexoPlanet>().hextileList;
 
             for (int x = 0; x < hextileList.Count; x++)
@@ -381,6 +401,8 @@ public class ShapeshifterInfiltratorAction : ReconAction
 
             Debug.Log(rand);
             RevealTile(cityList[rand]);
+
+           
         }
         else
         {
@@ -401,6 +423,14 @@ public class ShapeshifterInfiltratorAction : ReconAction
             int rand = Random.Range(0, cityList.Count-1);
             Debug.Log(rand);
             RevealTile(cityList[rand]);
+
+            Hextile hextileObject = cityList[rand];
+            Transform gfx = hextileObject.transform.Find("Main");
+            FloorGfx fgfx = gfx.GetComponent<FloorGfx>();
+            fgfx.myColor = Color.red;
+            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
+            if (hextileObject.visible || hextileObject.owningPlayerID == 0)
+                hextileRenderer.material.color = Color.blue;
         }
 
     }
