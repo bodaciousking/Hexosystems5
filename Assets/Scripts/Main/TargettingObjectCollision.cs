@@ -5,6 +5,7 @@ using UnityEngine;
 public class TargettingObjectCollision : MonoBehaviour
 {
     Targetting targetting;
+    Color CurrentColor;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class TargettingObjectCollision : MonoBehaviour
             Hextile tileScript = hextileObject.GetComponent<Hextile>();
             
             Renderer hextileRenderer = hextileObject.transform.Find("Main").GetComponent<Renderer>();
+            CurrentColor = hextileRenderer.material.color;
             hextileRenderer.material.color = Color.yellow;
 
             targetting.singleTarget = tileScript;
@@ -47,6 +49,8 @@ public class TargettingObjectCollision : MonoBehaviour
             GameObject hextileObject = other.gameObject.transform.parent.gameObject;
 
             Hextile tileScript = hextileObject.GetComponent<Hextile>();
+        
+
 
             targetting.ResetColors();
             targetting.ClearTargets();

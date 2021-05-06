@@ -288,10 +288,13 @@ public class BraveExplorersAction : ReconAction
             Hextile hextileObject = item;
             Transform gfx = hextileObject.transform.Find("Main");
             FloorGfx fgfx = gfx.GetComponent<FloorGfx>();
-            fgfx.myColor = Color.red;
             Renderer hextileRenderer = gfx.GetComponent<Renderer>();
             if (hextileObject.visible || hextileObject.owningPlayerID == 0)
+            {
+                fgfx.myColor = Color.blue;
                 hextileRenderer.material.color = Color.blue;
+            }
+               
 
             RevealTile(item);
         }
@@ -344,13 +347,7 @@ public class ScoutingDroneAction : ReconAction
         }
         else
         {
-            Transform gfx = hextileObject.transform.Find("Main");
-            FloorGfx fgfx = gfx.GetComponent<FloorGfx>();
-            fgfx.myColor = Color.red;
-            Renderer hextileRenderer = gfx.GetComponent<Renderer>();
-            if (hex.visible || hex.owningPlayerID == 0)
-                hextileRenderer.material.color = Color.blue;
-
+    
             List<Hextile> hextileList = map1.transform.GetChild(0).GetComponent<HexoPlanet>().hextileList;
 
             for (int x = 0; x < hextileList.Count; x++)
@@ -427,7 +424,7 @@ public class ShapeshifterInfiltratorAction : ReconAction
             Hextile hextileObject = cityList[rand];
             Transform gfx = hextileObject.transform.Find("Main");
             FloorGfx fgfx = gfx.GetComponent<FloorGfx>();
-            fgfx.myColor = Color.red;
+            fgfx.myColor = Color.blue;
             Renderer hextileRenderer = gfx.GetComponent<Renderer>();
             if (hextileObject.visible || hextileObject.owningPlayerID == 0)
                 hextileRenderer.material.color = Color.blue;

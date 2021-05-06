@@ -92,6 +92,8 @@ public class Targetting : MonoBehaviour
             Renderer hextileRenderer = gfx.GetComponent<Renderer>();
             FloorGfx hextileGfx = gfx.GetComponent<FloorGfx>();
             hextileRenderer.material.color = hextileGfx.myColor;
+            
+           
         }
     }
     public void ClearTargets()

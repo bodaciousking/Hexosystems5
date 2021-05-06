@@ -117,7 +117,7 @@ public class Hextile : MonoBehaviour
         fgfx.myColor = Color.red;
         Renderer hextileRenderer = gfx.GetComponent<Renderer>();
         if(visible || owningPlayerID == 0)
-        hextileRenderer.material.color = Color.red;
+            hextileRenderer.material.color = Color.red;
     }
 
  
